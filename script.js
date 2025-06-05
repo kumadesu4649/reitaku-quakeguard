@@ -14,14 +14,24 @@ function initMap(center = [139.767125, 35.681236], zoom = 12) {
     // ナビゲーションコントロールを追加
     map.addControl(new maplibregl.NavigationControl(), 'top-right');
 
-    // 現在地を表示（マーカー追加部分を削除）
+    // 現在地を表示（青いピンを追加）
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function(pos) {
             const lng = pos.coords.longitude;
             const lat = pos.coords.latitude;
             map.setCenter([lng, lat]); // 現在地に地図を移動
+
+            // 青いピンを立てる
+            new maplibregl.Marker({ color: "blue" })
+                .setLngLat([lng, lat])
+                .setPopup(new maplibregl.Popup().setText("現在地"))
+                .addTo(map);
         }, function() {
             console.error('現在地を取得できませんでした');
+        }, {
+            enableHighAccuracy: true, // 高精度の位置情報を要求
+            timeout: 10000, // タイムアウト設定
+            maximumAge: 0 // キャッシュを無効化
         });
     }
 }
@@ -30,6 +40,76 @@ function initMap(center = [139.767125, 35.681236], zoom = 12) {
 window.addEventListener('DOMContentLoaded', function() {
     initMap();
 });
+
+function showRouteToShelter(shelterLat, shelterLon) {
+    if (!navigator.geolocation) {
+        alert('現在地を取得できません');
+        return;
+    }
+
+    navigator.geolocation.getCurrentPosition(async function(pos) {
+        const start = [pos.coords.longitude, pos.coords.latitude];
+        const end = [shelterLon, shelterLat];
+
+        const osrmUrl = `https://router.project-osrm.org/route/v1/foot/${start[0]},${start[1]};${end[0]},${end[1]}?overview=full&geometries=geojson`;
+
+        try {
+            const res = await fetch(osrmUrl);
+            const json = await res.json();
+            if (!json.routes || json.routes.length === 0) {
+                alert('ルートが見つかりません');
+                return;
+            }
+
+            const route = json.routes[0].geometry;
+            const distance = json.routes[0].distance; // meters
+            const walkingSpeed = 1.3; // m/s (約4.7km/h)
+            const durationSeconds = distance / walkingSpeed;
+            const durationMinutes = Math.round(durationSeconds / 60);
+
+            // 既存ルートを削除
+            const routeLayerId = 'osrm-route-layer';
+            const routeSourceId = 'osrm-route-source';
+            if (map.getLayer(routeLayerId)) map.removeLayer(routeLayerId);
+            if (map.getSource(routeSourceId)) map.removeSource(routeSourceId);
+
+            // ルートをGeoJSONとして追加
+            map.addSource(routeSourceId, {
+                type: 'geojson',
+                data: {
+                    type: 'Feature',
+                    geometry: route
+                }
+            });
+
+            map.addLayer({
+                id: routeLayerId,
+                type: 'line',
+                source: routeSourceId,
+                paint: {
+                    'line-color': '#ADFF2F',
+                    'line-width': 5
+                }
+            });
+
+            // ポップアップで所要時間を表示
+            if (route.coordinates && route.coordinates.length > 1) {
+                const midIndex = Math.floor(route.coordinates.length / 2);
+                const midCoord = route.coordinates[midIndex];
+                const popupText = `徒歩 約${durationMinutes}分`;
+                new maplibregl.Popup({ closeOnClick: false, closeButton: false })
+                    .setLngLat(midCoord)
+                    .setHTML(`<div class="custom-popup">${popupText}</div>`)
+                    .addTo(map);
+            }
+        } catch (err) {
+            alert('経路取得に失敗しました');
+            console.error(err);
+        }
+    }, function() {
+        alert('現在地を取得できませんでした');
+    });
+}
 
 function showMap(place) {
     markers.forEach(m => m.remove());
@@ -43,9 +123,21 @@ function showMap(place) {
                 map.flyTo({ center: [lng, lat], zoom: 14 });
                 const marker = new maplibregl.Marker({ color: "red" })
                     .setLngLat([lng, lat])
-                    .setPopup(new maplibregl.Popup().setText(place))
+                    .setPopup(new maplibregl.Popup().setHTML(`
+                        <div>
+                            <p>${place}</p>
+                            <button id="routeButton" class="btn btn-sm btn-primary">ここまでのルートを表示</button>
+                        </div>
+                    `))
                     .addTo(map);
                 markers.push(marker);
+
+                // ボタンのクリックイベントを追加
+                marker.getPopup().on('open', () => {
+                    document.getElementById('routeButton').addEventListener('click', () => {
+                        showRouteToShelter(lat, lng);
+                    });
+                });
             } else {
                 alert('場所が見つかりませんでした');
             }
@@ -72,8 +164,27 @@ function updateSavedShelters() {
             <span style="cursor:pointer;" class="shelter-link">${shelter}</span>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="閉じる"></button>
         `;
-        div.querySelector('.shelter-link').addEventListener('click', function() {
-            showMap(shelter);
+        div.querySelector('.shelter-link').addEventListener('click', async function() {
+            const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(shelter)}`);
+            const data = await res.json();
+            if (data && data[0]) {
+                const shelterLat = parseFloat(data[0].lat);
+                const shelterLon = parseFloat(data[0].lon);
+
+                // 地図をその場所へ移動
+                map.flyTo({ center: [shelterLon, shelterLat], zoom: 14 });
+
+                // 赤いピンを立てる
+                new maplibregl.Marker({ color: "red" })
+                    .setLngLat([shelterLon, shelterLat])
+                    .setPopup(new maplibregl.Popup().setText(shelter))
+                    .addTo(map);
+
+                // 現在地からその場所までの経路を表示
+                showRouteToShelter(shelterLat, shelterLon);
+            } else {
+                alert('場所が見つかりませんでした');
+            }
         });
         div.querySelector('.btn-close').addEventListener('click', function() {
             savedShelters.splice(index, 1);
@@ -103,19 +214,28 @@ document.getElementById('shelterForm').addEventListener('submit', function(e) {
 document.getElementById('shelterModal').addEventListener('show.bs.modal', updateSavedShelters);
 
 function updatePhoneList() {
+    const phoneList = JSON.parse(localStorage.getItem('phones') || '[]');
     const ul = document.getElementById('phoneList');
     ul.innerHTML = '';
-    const li = document.createElement('li');
-    li.className = 'list-group-item bg-dark text-light d-flex justify-content-between align-items-center';
-    li.innerHTML = `
-        <span>サイトリンク</span>
-        <div>
-            <a href="https://aoisann.github.io/Aosa/01/" target="_blank" class="btn btn-sm btn-primary">
-                サイトに飛ぶ
-            </a>
-        </div>
-    `;
-    ul.appendChild(li);
+    phoneList.forEach((phone, idx) => {
+        const li = document.createElement('li');
+        li.className = 'list-group-item bg-dark text-light d-flex justify-content-between align-items-center';
+        li.innerHTML = `
+            <span>${phone}</span>
+            <div>
+                <a href="https://aoisann.github.io/Aosa/01/" target="_blank" class="btn btn-sm btn-primary me-2">
+                    サイトに飛ぶ
+                </a>
+                <button class="btn btn-sm btn-danger">削除</button>
+            </div>
+        `;
+        li.querySelector('.btn-danger').onclick = function() {
+            phoneList.splice(idx, 1);
+            localStorage.setItem('phones', JSON.stringify(phoneList));
+            updatePhoneList();
+        };
+        ul.appendChild(li);
+    });
 }
 
 document.getElementById('phoneModal').addEventListener('show.bs.modal', function() {

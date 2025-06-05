@@ -27,23 +27,16 @@ html, body {
   display: block;
 }
 
-.site-title-bar {
-  background: #3a3f47;
-  color: #fff;
-  display: flex;
-  align-items: center;
-  padding: 36px 0 26px 0; /* ←縦のpaddingを増やして高さをアップ */
-  margin-bottom: 20px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.13);
-  position: relative;
-  /* 追加: 幅を広げる */
-  width: 100vw;
-  min-width: 100vw;
-  left: 50%;
-  right: 50%;
-  margin-left: -50vw;
-  margin-right: -50vw;
+.custom-popup {
+  font-size: 1.1em;
+  font-weight: bold;
+  background: #CECECE;
+  color: #222;
+  padding: 8px 16px;
+  border-radius: 8px;
+  z-index: 1000001;
 }
+
 .site-title-bar .site-title {
   flex: 1;
   text-align: center;
@@ -56,4 +49,21 @@ html, body {
   margin: auto;
   width: max-content;
   color: #fff;
+  }
+
+.maplibregl-popup-content {
+  background: #CECECE !important;
+  color: #222 !important;
+  border-radius: 8px;
+  font-size: 1.1em;
+  font-weight: bold;
+  padding: 8px 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  z-index: 1000000;
+}
+
+.maplibregl-popup-tip {
+  border-top-color: #CECECE !important;
+  border-bottom-color: #CECECE !important;
+  z-index: 1000000;
 }
