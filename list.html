@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>防災グッズチェックリスト</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #e3f2fd 0%, #f5f5f5 100%);
+            margin: 0;
+            padding: 0;
+        }
+        .site-title-bar {
+            background: #3a3f47;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            padding: 36px 0 26px 0; /* ←縦のpaddingを増やして高さをアップ */
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.13);
+            position: relative;
+            /* 追加: 幅を広げる */
+            width: 100vw;
+            min-width: 100vw;
+            left: 50%;
+            right: 50%;
+            margin-left: -50vw;
+            margin-right: -50vw;
+        }
+        .site-title-bar .site-title {
+            flex: 1;
+            text-align: center;
+            font-size: 2em;
+            letter-spacing: 0.1em;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+            right: 0;
+            margin: auto;
+            width: max-content;
+            color: #fff;
+        }
+        header {
+            background: #1976d2;
+            color: #fff;
+            padding: 1.5rem 1rem 1rem 1rem;
+            text-align: center;
+            border-bottom-left-radius: 24px;
+            border-bottom-right-radius: 24px;
+            box-shadow: 0 2px 8px rgba(25, 118, 210, 0.08);
+        }  
+        main {
+            max-width: 520px;
+            margin: 2.5rem auto;
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 4px 16px rgba(25,118,210,0.10);
+            padding: 2.5rem 2rem;
+        }
+
+        .back-link {
+            margin-left: 16px;
+            margin-right: 16px;
+            background: #fff;
+            color: #3a3f47;
+            padding: 6px 14px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: bold;
+            border: 1px solid #3a3f47;
+            font-size: 0.95em;
+            transition: background 0.2s, color 0.2s;
+        }
+        .back-link:hover {
+            background: #e3e3e3;
+            color: #222;
+        }
+        h1 {
+            margin: 0 0 0.5rem 0;
+            font-size: 2rem;
+            letter-spacing: 0.05em;
+        }
+        p {
+            margin: 0 0 1.5rem 0;
+            color: #e3f2fd;
+            font-size: 1.05rem;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        li {
+            margin-bottom: 1.2rem;
+            display: flex;
+            align-items: center;
+            background: #f0f7fa;
+            border-radius: 8px;
+            padding: 0.7rem 1rem;
+            transition: background 0.2s;
+        }
+        li:last-child {
+            margin-bottom: 0;
+        }
+        label {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            cursor: pointer;
+            font-size: 1.08rem;
+        }
+        input[type="checkbox"] {
+            appearance: none;
+            width: 28px;
+            height: 28px;
+            border: 2px solid #1976d2;
+            border-radius: 7px;
+            margin-right: 1.2rem;
+            background: #fff;
+            transition: border 0.2s, box-shadow 0.2s;
+            position: relative;
+            outline: none;
+            cursor: pointer;
+        }
+        input[type="checkbox"]:checked {
+            background: #1976d2;
+            border-color: #1976d2;
+        }
+        input[type="checkbox"]:checked::after {
+            content: '';
+            position: absolute;
+            left: 7px;
+            top: 3px;
+            width: 8px;
+            height: 15px;
+            border-right: 3px solid #fff;
+            border-bottom: 3px solid #fff;
+            transform: rotate(40deg);
+        }
+        input[type="checkbox"]:focus {
+            box-shadow: 0 0 0 3px #90caf9;
+        }
+        .checked {
+            text-decoration: line-through;
+            color: #90a4ae;
+        }
+        @media (max-width: 600px) {
+            main { padding: 1.2rem 0.5rem; }
+            h1 { font-size: 1.3rem; }
+            li { padding: 0.6rem 0.5rem; }
+            input[type="checkbox"] { width: 24px; height: 24px; margin-right: 0.8rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="site-title-bar">
+        <a href="./index.html" class="site-title" style="position: absolute; left: 0; right: 0; margin: auto; width: max-content; text-decoration: none; color: #fff;">
+            Quake Guard
+        </a>
+        <p style="text-align: center; color: #fff; font-size: 1em; margin: 60px auto 0;">
+            防災グッズチェックリスト
+        </p>
+    </div>
+    <main>
+        <ul id="checklist">
+            <li><label><input type="checkbox"> <span style="font-size:1.3em; margin-right:0.5em;">💧</span>飲料水（1人1日3リットル目安）</label></li>
+            <li><label><input type="checkbox"> <span style="font-size:1.3em; margin-right:0.5em;">🥫</span>非常食（保存食、缶詰、乾パンなど）</label></li>
+            <li><label><input type="checkbox"> <span style="font-size:1.3em; margin-right:0.5em;">🔦</span>懐中電灯・予備電池</label></li>
+            <li><label><input type="checkbox"> <span style="font-size:1.3em; margin-right:0.5em;">📻</span>携帯ラジオ</label></li>
+            <li><label><input type="checkbox"> <span style="font-size:1.3em; margin-right:0.5em;">⛑️</span>救急セット</label></li>
+            <li><label><input type="checkbox"> <span style="font-size:1.3em; margin-right:0.5em;">😷</span>マスク・消毒液</label></li>
+            <li><label><input type="checkbox"> <span style="font-size:1.3em; margin-right:0.5em;">🔋</span>モバイルバッテリー</label></li>
+            <li><label><input type="checkbox"> <span style="font-size:1.3em; margin-right:0.5em;">💴</span>現金・身分証明書</label></li>
+            <li><label><input type="checkbox"> <span style="font-size:1.3em; margin-right:0.5em;">👕</span>衣類・タオル</label></li>
+            <li><label><input type="checkbox"> <span style="font-size:1.3em; margin-right:0.5em;">🧥</span>雨具・防寒具</label></li>
+        </ul>
+        <div style="margin-top:2.5rem;">
+            <h2 style="font-size:1.2em; color:#1976d2;">収納場所メモ（写真＋メモ）</h2>
+            <form id="photoMemoForm" style="margin-bottom:1.2em;">
+                <input type="file" id="photoInput" accept="image/*" style="margin-bottom:0.5em;">
+                <input type="text" id="memoInput" placeholder="例: 非常食は押入れの下段" style="width:60%;padding:0.3em;">
+                <button type="submit" style="padding:0.3em 1em;">追加</button>
+            </form>
+            <div id="photoMemoList"></div>
+        </div>
+        <div style="margin-top:2.5rem;">
+            <h2 style="font-size:1.2em; color:#1976d2;">賞味期限／使用期限アラート</h2>
+            <form id="expireForm" style="margin-bottom:1.2em;">
+                <input type="text" id="itemName" placeholder="例: 非常食" style="width:30%;padding:0.3em;">
+                <input type="date" id="expireDate" style="padding:0.3em;">
+                <button type="submit" style="padding:0.3em 1em;">登録</button>
+            </form>
+            <div id="expireList"></div>
+        </div>
+    </main>
+
+            <a id="backToMain"
+            href="./index.html"
+            class="back-link"
+            style="background: #fff; color: #3a3f47; border: 1px solid #3a3f47; display: block; width: fit-content; margin: 0 auto 18px;">
+             元のページに戻る
+        </a>
+    <script>
+        // チェック状態をローカルストレージに保存
+        const checklist = document.getElementById('checklist');
+        const checkboxes = checklist.querySelectorAll('input[type="checkbox"]');
+        // 保存された状態を復元
+        checkboxes.forEach((cb, i) => {
+            const checked = localStorage.getItem('item' + i) === 'true';
+            cb.checked = checked;
+            if (checked) cb.parentElement.classList.add('checked');
+            cb.addEventListener('change', () => {
+                localStorage.setItem('item' + i, cb.checked);
+                cb.parentElement.classList.toggle('checked', cb.checked);
+
+                // モーションを追加
+                if (cb.checked) {
+                    cb.parentElement.style.transition = 'transform 0.2s ease, opacity 0.2s ease';
+                    cb.parentElement.style.transform = 'scale(1.05)';
+                    cb.parentElement.style.opacity = '0.8';
+                    setTimeout(() => {
+                        cb.parentElement.style.transform = 'scale(1)';
+                        cb.parentElement.style.opacity = '1';
+                    }, 200);
+                }
+            });
+        });
+        const photoMemoForm = document.getElementById('photoMemoForm');
+    const photoInput = document.getElementById('photoInput');
+    const memoInput = document.getElementById('memoInput');
+    const photoMemoList = document.getElementById('photoMemoList');
+    let photoMemos = JSON.parse(localStorage.getItem('photoMemos') || '[]');
+    function renderPhotoMemos() {
+        photoMemoList.innerHTML = '';
+        photoMemos.forEach((m, i) => {
+            const div = document.createElement('div');
+            div.style.marginBottom = '1em';
+            div.innerHTML = `<img src="${m.img}" style="width:60px;height:60px;object-fit:cover;border-radius:8px;margin-right:0.7em;vertical-align:middle;">
+                <span>${m.memo}</span>
+                <button style="margin-left:1em;" onclick="removePhotoMemo(${i})">削除</button>`;
+            photoMemoList.appendChild(div);
+        });
+    }
+    window.removePhotoMemo = function(i) {
+        photoMemos.splice(i,1);
+        localStorage.setItem('photoMemos', JSON.stringify(photoMemos));
+        renderPhotoMemos();
+    }
+    photoMemoForm.onsubmit = function(e) {
+        e.preventDefault();
+        const file = photoInput.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = function(ev) {
+            photoMemos.push({img: ev.target.result, memo: memoInput.value});
+            localStorage.setItem('photoMemos', JSON.stringify(photoMemos));
+            renderPhotoMemos();
+            photoInput.value = '';
+            memoInput.value = '';
+        };
+        reader.readAsDataURL(file);
+    };
+    renderPhotoMemos();
+
+    // 賞味期限アラート機能
+    const expireForm = document.getElementById('expireForm');
+    const itemName = document.getElementById('itemName');
+    const expireDate = document.getElementById('expireDate');
+    const expireList = document.getElementById('expireList');
+    let expireItems = JSON.parse(localStorage.getItem('expireItems') || '[]');
+    function renderExpireItems() {
+        expireList.innerHTML = '';
+        const today = new Date();
+        expireItems.forEach((item, i) => {
+            const d = new Date(item.date);
+            const diff = Math.ceil((d - today) / (1000*60*60*24));
+            let alertMsg = '';
+            if (diff <= 7 && diff >= 0) alertMsg = `<span style="color:red;">（まもなく期限）</span>`;
+            if (diff < 0) alertMsg = `<span style="color:gray;">（期限切れ）</span>`;
+            const div = document.createElement('div');
+            div.innerHTML = `${item.name}：${item.date} ${alertMsg} <button onclick="removeExpireItem(${i})">削除</button>`;
+            expireList.appendChild(div);
+        });
+    }
+    window.removeExpireItem = function(i) {
+        expireItems.splice(i,1);
+        localStorage.setItem('expireItems', JSON.stringify(expireItems));
+        renderExpireItems();
+    }
+    expireForm.onsubmit = function(e) {
+        e.preventDefault();
+        if (!itemName.value || !expireDate.value) return;
+        expireItems.push({name: itemName.value, date: expireDate.value});
+        localStorage.setItem('expireItems', JSON.stringify(expireItems));
+        renderExpireItems();
+        itemName.value = '';
+        expireDate.value = '';
+    };
+    renderExpireItems();
+        
+    </script>
+</body>
+</html></ul>

@@ -32,21 +32,29 @@
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
             data-bs-target="#navbarNav" aria-controls="navbarNav" 
             aria-expanded="false" aria-label="ナビゲーションを表示">
-            <span class="navbar-toggler-icon"></span>
+            <span class="navbar-toggler-icon" style="filter: invert(1);"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#" data-bs-toggle="modal" data-bs-target="#listModal">リスト</a>
+                    <a class="nav-link" href="./list.html">
+                        <i class="bi bi-list"></i> リスト
+                    </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="phone.html">電話</a>
+                    <a class="nav-link" href="./phone.html">
+                        <i class="bi bi-telephone"></i> 電話
+                    </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#shelterModal">避難場所</a>
+                    <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#shelterModal">
+                        <i class="bi bi-geo-alt"></i> 避難場所
+                    </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#settingsModal">設定</a>
+                    <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#settingsModal">
+                        <i class="bi bi-gear"></i> 設定
+                    </a>
                 </li>
             </ul>
             <form class="d-flex ms-3" role="search" id="searchForm">
