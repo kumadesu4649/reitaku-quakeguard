@@ -154,7 +154,18 @@
     </style>
 </head>
 <body>
-    <div class="site-title-bar">
+
+<style>
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+.navbar-fade-in {
+    animation: fadeIn 1.5s ease-in-out;
+}
+</style>
+
+    <div class="site-title-bar navbar-fade-in">
         <a href="./index.html" class="site-title" style="position: absolute; left: 0; right: 0; margin: auto; width: max-content; text-decoration: none; color: #fff;">
             Quake Guard
         </a>

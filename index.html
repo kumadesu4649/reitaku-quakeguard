@@ -13,8 +13,18 @@
 </head>
 <body>
 
+<style>
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+.navbar-fade-in {
+    animation: fadeIn 1.5s ease-in-out;
+}
+</style>
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light navbar-fade-in">
     <div class="container d-flex flex-column align-items-center">
       <a href="./index.html" class="site-title" style="text-decoration: none; color: #fff; font-size: 24px; font-weight: bold;">
         Quake Guard
