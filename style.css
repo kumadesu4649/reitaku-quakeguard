@@ -1,0 +1,10 @@
+.site-title-bar {
+    background: #222;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    padding: 20px 0 12px 0;
+    margin-bottom: 32px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+    position: relative; /* 追加 */
+}

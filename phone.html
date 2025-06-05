@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>Quake Guard - 災害時の電話案内サイト</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body {
+            background: #2e3238;
+            color: #f8f9fa;
+            font-family: 'Segoe UI', 'Meiryo', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .site-title-bar {
+            background: #3a3f47;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            padding: 36px 0 26px 0; /* ←縦のpaddingを増やして高さをアップ */
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.13);
+            position: relative;
+            /* 追加: 幅を広げる */
+            width: 100vw;
+            min-width: 100vw;
+            left: 50%;
+            right: 50%;
+            margin-left: -50vw;
+            margin-right: -50vw;
+        }
+        .site-title-bar .site-title {
+            flex: 1;
+            text-align: center;
+            font-size: 2em;
+            letter-spacing: 0.1em;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+            right: 0;
+            margin: auto;
+            width: max-content;
+            color: #fff;
+        }
+        .back-link {
+            margin-left: 16px;
+            margin-right: 16px;
+            background: #fff;
+            color: #3a3f47;
+            padding: 6px 14px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: bold;
+            border: 1px solid #3a3f47;
+            font-size: 0.95em;
+            transition: background 0.2s, color 0.2s;
+        }
+        .back-link:hover {
+            background: #e3e3e3;
+            color: #222;
+        }
+        .main-flex {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            padding: 0 4vw;
+        }
+        .main-content {
+            background: #383d45;
+            border-radius: 12px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.15);
+            color: #f8f9fa;
+            padding: 20px 12px 18px 12px;
+            margin-bottom: 16px;
+            width: 100%;
+            max-width: 480px;
+            box-sizing: border-box;
+        }
+        .main-content.right {
+            max-width: 340px;
+            min-width: 0;
+            padding: 20px 8px 18px 8px;
+        }
+        h2 {
+            color: #90caf9;
+            border-left: 4px solid #90caf9;
+            padding-left: 10px;
+            margin-top: 24px;
+            font-size: 1.1em;
+        }
+        #phoneForm label {
+            font-size: 1em;
+            color: #e6e6e6;
+        }
+        #phoneForm input[type="tel"] {
+            width: 100%;
+            max-width: 220px;
+            padding: 7px 10px;
+            border: 1px solid #555;
+            border-radius: 4px;
+            background: #2e3238;
+            color: #f8f9fa;
+            font-size: 1em;
+            margin-right: 8px;
+            margin-top: 8px;
+            box-sizing: border-box;
+        }
+        #phoneForm button {
+            background: #1976d2;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            padding: 7px 18px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-top: 8px;
+        }
+        #phoneForm button:active {
+            background: #1565c0;
+        }
+        #phoneList {
+            margin-top: 12px;
+            padding-left: 0;
+        }
+        #phoneList li {
+            margin: 6px 0;
+            padding: 10px 10px;
+            border-radius: 4px;
+            font-size: 1.08em;
+            list-style-type: decimal;
+            color: #f8f9fa;
+            word-break: break-all;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+        #phoneList li.default-phone {
+            background: #444851;
+            color: #f0f0f0;
+            font-weight: normal;
+            cursor: default;
+        }
+        #phoneList li.user-phone {
+            background: #33627a;
+            color: #b3e5fc;
+            font-weight: bold;
+        }
+        #phoneList li.user-phone:hover {
+            background: #1976d2;
+        }
+        .example {
+            margin-top: 0.5em;
+            color: #e6e6e6;
+            font-size: 0.95em;
+        }
+        .desc {
+            color: #e6e6e6;
+            margin-bottom: 1.2em;
+            line-height: 1.7;
+            font-size: 1em;
+        }
+        /* モーダルのスマホ対応 */
+        #callConfirmModal {
+            display: none;
+            position: fixed;
+            left: 0; top: 0;
+            width: 100vw; height: 100vh;
+            background: rgba(30,32,36,0.55);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        #callConfirmModal .modal-inner {
+            background: #383d45;
+            color: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px 10vw;
+            min-width: 200px;
+            max-width: 90vw;
+            text-align: center;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.18);
+        }
+        #callConfirmModal button {
+            margin: 0 8px;
+            background: #1976d2;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            padding: 7px 18px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        #callConfirmModal button#callNo {
+            background: #555;
+        }
+        @media (max-width: 700px) {
+            .main-flex {
+                flex-direction: column;
+                gap: 0;
+                padding: 0 2vw;
+            }
+            .main-content {
+                max-width: 100vw;
+                min-width: 0;
+                margin-bottom: 12px;
+                padding: 16px 4vw 14px 4vw;
+            }
+            .main-content.right {
+                max-width: 100vw;
+                padding: 16px 4vw 14px 4vw;
+            }
+            .site-title-bar .site-title {
+                font-size: 1.3em;
+            }
+            #callConfirmModal .modal-inner {
+                padding: 18px 4vw;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="site-title-bar">
+        <span class="site-title" style="position: absolute; left: 0; right: 0; margin: auto; width: max-content;">
+            Quake Guard
+        </span>
+    </div>
+    <a id="backToMain"
+       href="#"
+       class="back-link"
+       style="background: #fff; color: #3a3f47; border: 1px solid #3a3f47; display: block; width: fit-content; margin: 0 0 18px 24px;">
+        元のページに戻る
+    </a>
+    <div class="main-flex">
+        <!-- 左側：説明と電話番号登録フォーム -->
+        <div class="main-content">
+            <p class="desc">
+                災害時には電話回線が混雑し、つながりにくくなることがあります。<br>
+                緊急時は短く要点を伝え、不要不急の通話は控えましょう。<br>
+                また、災害用伝言ダイヤル（171）や各種相談窓口も活用してください。<br>
+                このページでは、災害時に役立つ電話番号をまとめて確認・登録できます。
+            </p>
+            <h2>電話番号登録フォーム</h2>
+            <form id="phoneForm">
+                <label for="phone">電話番号:</label>
+                <input type="tel" id="phone" name="phone" required pattern="0\d{9,10}|0\d{1,3}-\d{3,4}-\d{4}">
+                <button type="submit">登録</button>
+            </form>
+            <p class="example">
+                入力例：090-1234-5678、03-1234-5678、052-1234-5677
+            </p>
+        </div>
+        <!-- 中央の仕切り線 -->
+        <div style="width:1.5px; background:linear-gradient(to bottom,#90caf9,#3a3f47); border-radius:1px; min-height:180px; align-self:stretch; display:block;"></div>
+        <!-- 右側：登録済み電話番号リスト -->
+        <div class="main-content right" style="overflow-x: auto;">
+            <h3 style="color:#90caf9; margin-top:0;">登録済み電話番号</h3>
+            <ul id="phoneList" style="margin-top: 12px; padding-left: 0; box-sizing: border-box; word-break: break-all; overflow-wrap: break-word;">
+                <li class="default-phone">119（消防・救急）</li>
+                <li class="default-phone">110（警察）</li>
+                <li class="default-phone">171（災害用伝言ダイヤル）</li>
+                <li class="default-phone">#7119（救急相談センター）</li>
+                <li class="default-phone">#8000（こども医療電話相談）</li>
+            </ul>
+            <div id="callConfirmModal">
+                <div class="modal-inner">
+                    <div id="callConfirmText" style="margin-bottom:18px;"></div>
+                    <button id="callYes">はい</button>
+                    <button id="callNo">いいえ</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        const form = document.getElementById('phoneForm');
+        const phoneList = document.getElementById('phoneList');
+        const phoneInput = document.getElementById('phone');
+        const phones = [];
+
+        // 入力時に自動でハイフンを挿入
+        phoneInput.addEventListener('input', function(e) {
+            let value = phoneInput.value.replace(/[^0-9]/g, '');
+            // 固定電話（10桁）と携帯電話（11桁）で分岐
+            if (value.length <= 10) {
+                // 固定電話例: 03-1234-5678, 06-1234-5678, 052-1234-5678
+                if (value.startsWith('03') || value.startsWith('06')) {
+                    value = value.replace(/^(\d{2})(\d{4})(\d{0,4})$/, function(_, a, b, c) {
+                        return c ? `${a}-${b}-${c}` : b ? `${a}-${b}` : a;
+                    });
+                } else if (value.length > 2) {
+                    value = value.replace(/^(\d{3})(\d{3,4})(\d{0,4})$/, function(_, a, b, c) {
+                        return c ? `${a}-${b}-${c}` : b ? `${a}-${b}` : a;
+                    });
+                }
+            } else {
+                // 携帯電話例: 090-1234-5678, 080-1234-5678
+                value = value.replace(/^(\d{3})(\d{4})(\d{0,4})$/, function(_, a, b, c) {
+                    return c ? `${a}-${b}-${c}` : b ? `${a}-${b}` : a;
+                });
+            }
+            phoneInput.value = value;
+        });
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const phone = phoneInput.value.trim();
+            if(phone && !phones.includes(phone)) {
+                phones.push(phone);
+                displayPhones();
+                phoneInput.value = '';
+            }
+        });
+
+        phoneList.addEventListener('click', function(e) {
+            if (e.target.tagName === 'LI' && e.target.classList.contains('user-phone')) {
+                const tel = e.target.textContent;
+                document.getElementById('callConfirmText').textContent = `この電話番号に電話をかけますか？\n${tel}`;
+                document.getElementById('callConfirmModal').style.display = 'flex';
+                document.getElementById('callYes').onclick = function() {
+                    window.location.href = 'tel:' + tel.replace(/[^\d#]/g, '');
+                    document.getElementById('callConfirmModal').style.display = 'none';
+                };
+                document.getElementById('callNo').onclick = function() {
+                    document.getElementById('callConfirmModal').style.display = 'none';
+                };
+            }
+        });
+
+        function displayPhones() {
+            // 既定の災害用電話番号
+            const defaultPhones = [
+                '119（消防・救急）',
+                '110（警察）',
+                '171（災害用伝言ダイヤル）',
+                '#7119（救急相談センター）',
+                '#8000（こども医療電話相談）'
+            ];
+            // 既定＋ユーザー登録分を表示（既定はクラス付与、ユーザーはuser-phoneクラス）
+            phoneList.innerHTML =
+                defaultPhones.map(p => `<li class="default-phone">${p}</li>`).join('') +
+                phones.map(p => `<li class="user-phone">${p}</li>`).join('');
+        }
+    </script>
+</body>
+</html>
