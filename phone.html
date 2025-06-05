@@ -42,6 +42,23 @@
             width: max-content;
             color: #fff;
         }
+        .site-title-bar .header-button {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #1976d2;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            padding: 8px 12px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .site-title-bar .header-button:hover {
+            background: #1565c0;
+        }
         .back-link {
             margin-left: 16px;
             margin-right: 16px;
@@ -221,7 +238,7 @@
     </style>
 </head>
 <body>
-    
+
     <style>
 @keyframes fadeIn {
     from { opacity: 0; }
@@ -240,6 +257,7 @@
             緊急連絡先リスト
         </p>
     </div>
+
     <div class="main-flex">
         <!-- 左側：説明と電話番号登録フォーム -->
         <div class="main-content">
@@ -356,5 +374,53 @@
                 phones.map(p => `<li class="user-phone">${p}</li>`).join('');
         }
     </script>
+    <footer style="background: linear-gradient(135deg, #3a3f47, #2e3238); padding: 24px 0; text-align: center; color: #fff; margin-top: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.2);">
+        <div style="max-width: 960px; margin: 0 auto; padding: 0 16px;">
+            <nav style="display: flex; flex-wrap: wrap; justify-content: center; margin-bottom: 12px; font-family: 'Segoe UI', 'Meiryo', sans-serif;">
+                <a href="./index.html" style="display: flex; align-items: center; justify-content: center; flex: 1 1 200px; padding: 12px 20px; margin: 8px; background: #d21922; border-radius: 4px; color: #fff; text-decoration: none; transition: background 0.3s, transform 0.1s;"
+                   onmouseover="this.style.background='#1565c0';" onmouseout="this.style.background='#1976d2';" 
+                   onmousedown="this.style.transform='scale(0.97)';" onmouseup="this.style.transform='scale(1)';">
+                    <span style="display: inline-block; width: 32px; height: 32px; line-height: 32px; border-radius: 50%; background: #fff; color: #91d219; text-align: center; margin-right: 8px;">
+                        🗺
+                    </span>
+                    <span>防災マップ</span>
+                </a>
+                <a href="./phone.html" style="display: flex; align-items: center; justify-content: center; flex: 1 1 200px; padding: 12px 20px; margin: 8px; background: #d29819; border-radius: 4px; color: #fff; text-decoration: none; transition: background 0.3s, transform 0.1s;"
+                   onmouseover="this.style.background='#1565c0';" onmouseout="this.style.background='#1976d2';" 
+                   onmousedown="this.style.transform='scale(0.97)';" onmouseup="this.style.transform='scale(1)';">
+                    <span style="display: inline-block; width: 32px; height: 32px; line-height: 32px; border-radius: 50%; background: #fff; color: #1976d2; text-align: center; margin-right: 8px;">
+                        📞
+                    </span>
+                    <span>連絡先</span>
+                </a>
+                <a href="./list.html" style="display: flex; align-items: center; justify-content: center; flex: 1 1 200px; padding: 12px 20px; margin: 8px; background: #72d219; border-radius: 4px; color: #fff; text-decoration: none; transition: background 0.3s, transform 0.1s;"
+                   onmouseover="this.style.background='#1565c0';" onmouseout="this.style.background='#1976d2';" 
+                   onmousedown="this.style.transform='scale(0.97)';" onmouseup="this.style.transform='scale(1)';">
+                    <span style="display: inline-block; width: 32px; height: 32px; line-height: 32px; border-radius: 50%; background: #fff; color: #1976d2; text-align: center; margin-right: 8px;">
+                        🎒
+                    </span>
+                    <span>防災グッズ</span>
+                </a>
+            </nav>
+            <p style="font-size: 0.85em; margin: 8px 0;">© 2025 Reitaku Quake Guard. All Rights Reserved.</p>
+            <p style="font-size: 0.75em;">
+                <a href="#" style="color: #fff; text-decoration: none; margin: 0 10px; transition: color 0.3s;">利用規約</a>
+                |
+                <a href="#" style="color: #fff; text-decoration: none; margin: 0 10px; transition: color 0.3s;">プライバシーポリシー</a>
+            </p>
+        </div>
+        <script>
+            // Adding simple hover effects via JavaScript since inline styles can't handle :hover
+            document.querySelectorAll("footer a").forEach(function(link) {
+                link.addEventListener("mouseover", function() {
+                    this.style.color = "#90caf9";
+                });
+                link.addEventListener("mouseout", function() {
+                    this.style.color = "#fff";
+                });
+            });
+        </script>
+    </footer>
+    
 </body>
 </html>
