@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>防災グッズチェックリスト</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
         body {
             font-family: 'Segoe UI', Arial, sans-serif;
-            background: linear-gradient(135deg, #e3f2fd 0%, #f5f5f5 100%);
+            background: linear-gradient(135deg, #b8b8b8 0%, #f5f5f5 100%);
             margin: 0;
             padding: 0;
         }
@@ -42,7 +42,7 @@
             color: #fff;
         }
         header {
-            background: #1976d2;
+            background: #ffffffc9;
             color: #fff;
             padding: 1.5rem 1rem 1rem 1rem;
             text-align: center;
@@ -173,8 +173,14 @@
             防災グッズチェックリスト
         </p>
     </div>
+
     <main>
-        <ul id="checklist">
+        <section>
+            <h2 style="font-size:1.5em; color:#1976d2; margin-bottom:1rem;">🎒防災グッズチェックリスト</h2>
+            <p style="font-size:1.1em; color:#555; margin-bottom:1.5rem;">
+                地震や災害に備えて、必要な防災グッズをチェックしましょう。
+            </p>
+            <ul id="checklist" style="padding:0; list-style:none;">
             <li><label><input type="checkbox"> <span style="font-size:1.3em; margin-right:0.5em;">💧</span>飲料水（1人1日3リットル目安）</label></li>
             <li><label><input type="checkbox"> <span style="font-size:1.3em; margin-right:0.5em;">🥫</span>非常食（保存食、缶詰、乾パンなど）</label></li>
             <li><label><input type="checkbox"> <span style="font-size:1.3em; margin-right:0.5em;">🔦</span>懐中電灯・予備電池</label></li>
@@ -185,25 +191,184 @@
             <li><label><input type="checkbox"> <span style="font-size:1.3em; margin-right:0.5em;">💴</span>現金・身分証明書</label></li>
             <li><label><input type="checkbox"> <span style="font-size:1.3em; margin-right:0.5em;">👕</span>衣類・タオル</label></li>
             <li><label><input type="checkbox"> <span style="font-size:1.3em; margin-right:0.5em;">🧥</span>雨具・防寒具</label></li>
-        </ul>
-        <div style="margin-top:2.5rem;">
-            <h2 style="font-size:1.2em; color:#1976d2;">収納場所メモ（写真＋メモ）</h2>
-            <form id="photoMemoForm" style="margin-bottom:1.2em;">
-                <input type="file" id="photoInput" accept="image/*" style="margin-bottom:0.5em;">
-                <input type="text" id="memoInput" placeholder="例: 非常食は押入れの下段" style="width:60%;padding:0.3em;">
-                <button type="submit" style="padding:0.3em 1em;">追加</button>
+            </ul>
+            <script>
+                // Add animation and color change when a checkbox is checked
+                checklist.addEventListener('change', (event) => {
+                    if (event.target.type === 'checkbox') {
+                        const listItem = event.target.closest('li');
+                        if (event.target.checked) {
+                            listItem.style.transition = 'transform 0.2s ease, opacity 0.2s ease, background-color 0.2s ease';
+                            listItem.style.transform = 'scale(1.05)';
+                            listItem.style.opacity = '0.8';
+                            listItem.style.backgroundColor = '#d1e7dd'; // Light green background
+                            setTimeout(() => {
+                                listItem.style.transform = 'scale(1)';
+                                listItem.style.opacity = '1';
+                            }, 200);
+                        } else {
+                            listItem.style.backgroundColor = '#f0f7fa'; // Reset to original background
+                        }
+                    }
+                });
+            </script>
+            <form id="addItemForm" style="margin-top:1rem; display:flex; gap:0.5rem;">
+            <input type="text" id="newItemText" placeholder="追加するアイテム" style="flex:1; padding:0.5em; border:1px solid #ccc; border-radius:4px;">
+            <button type="submit" style="padding:0.5em 1em; background:#1976d2; color:#fff; border:none; border-radius:4px; cursor:pointer;">追加</button>
             </form>
-            <div id="photoMemoList"></div>
-        </div>
-        <div style="margin-top:2.5rem;">
-            <h2 style="font-size:1.2em; color:#1976d2;">賞味期限／使用期限アラート</h2>
-            <form id="expireForm" style="margin-bottom:1.2em;">
-                <input type="text" id="itemName" placeholder="例: 非常食" style="width:30%;padding:0.3em;">
-                <input type="date" id="expireDate" style="padding:0.3em;">
-                <button type="submit" style="padding:0.3em 1em;">登録</button>
+        </section>
+        <script>
+            const addItemForm = document.getElementById('addItemForm');
+            const newItemText = document.getElementById('newItemText');
+            const checklist = document.getElementById('checklist');
+
+            // Create a dropdown for emoji selection
+            const emojiSelect = document.createElement('select');
+            emojiSelect.style.padding = '0.5em';
+            emojiSelect.style.border = '1px solid #ccc';
+            emojiSelect.style.borderRadius = '4px';
+            emojiSelect.innerHTML = `
+            <option value="💧">💧</option>
+            <option value="🥫">🥫</option>
+            <option value="🔦">🔦</option>
+            <option value="📻">📻</option>
+            <option value="⛑️">⛑️</option>
+            <option value="😷">😷</option>
+            <option value="🔋">🔋</option>
+            <option value="💴">💴</option>
+            <option value="👕">👕</option>
+            <option value="🧥">🧥</option>
+            <option value="🆕">🆕</option>
+            `;
+            addItemForm.insertBefore(emojiSelect, newItemText);
+
+            addItemForm.onsubmit = function(e) {
+            e.preventDefault();
+            if (!newItemText.value.trim()) return;
+            const li = document.createElement('li');
+            li.innerHTML = `<label><input type="checkbox"> <span style="font-size:1.3em; margin-right:0.5em;">${emojiSelect.value}</span>${newItemText.value}</label>`;
+            checklist.appendChild(li);
+            newItemText.value = '';
+            };
+        </script>
+
+        <section style="margin-top:2.5rem;">
+            <h2 style="font-size:1.5em; color:#1976d2; margin-bottom:1rem;">機能メニュー</h2>
+            <div style="display:flex; flex-wrap:wrap; gap:1rem;">
+                <button onclick="showSection('photoMemoSection')" style="padding:0.5em 1em; background:#1976d2; color:#fff; border:none; border-radius:4px; cursor:pointer; display:flex; flex-direction:column; align-items:center;">
+                    <span style="font-size:5em;">📝</span>
+                    <span style="margin-top:0.3em;">収納場所メモ</span>
+                </button>
+                <button onclick="showSection('expireAlertSection')" style="padding:0.5em 1em; background:#1976d2; color:#fff; border:none; border-radius:4px; cursor:pointer; display:flex; flex-direction:column; align-items:center;">
+                    <span style="font-size:5em;">⏰</span>
+                    <span style="margin-top:0.5em;">賞味期限アラート</span>
+                </button>
+                <button onclick="showSection('familyInfoSection')" style="padding:0.5em 1em; background:#1976d2; color:#fff; border:none; border-radius:4px; cursor:pointer; display:flex; flex-direction:column; align-items:center;">
+                    <span style="font-size:5em;">👨‍👩‍👧‍👦</span>
+                    <span style="margin-top:0.3em;">家族・ペット情報</span>
+                </button>
+            </div>
+        </section>
+
+        <section id="photoMemoSection" style="margin-top:2.5rem; display:none; background:#f9f9f9; padding:1rem; border-radius:8px; box-shadow:0 2px 8px rgba(0,0,0,0.1);">
+            <button onclick="document.getElementById('photoMemoSection').style.display='none'" style="float:right; background:none; border:none; font-size:1.2em; cursor:pointer;">✖</button>
+            <h2 style="font-size:1.5em; color:#1976d2; margin-bottom:1rem;">📝収納場所メモ（写真＋メモ）</h2>
+            <form id="photoMemoForm" style="display:flex; flex-wrap:wrap; gap:0.5rem; margin-bottom:1.2em;">
+            <input type="file" id="photoInput" accept="image/*" style="flex:1; min-width:200px; padding:0.3em;">
+            <input type="text" id="memoInput" placeholder="例: 非常食は押入れの下段" style="flex:2; min-width:200px; padding:0.3em;">
+            <button type="submit" style="padding:0.3em 1em; background:#1976d2; color:#fff; border:none; border-radius:4px; cursor:pointer;">追加</button>
             </form>
-            <div id="expireList"></div>
-        </div>
+            <div id="photoMemoList" style="display:flex; flex-direction:column; gap:1rem;"></div>
+        </section>
+
+        <section id="expireAlertSection" style="margin-top:2.5rem; display:none; background:#f9f9f9; padding:1rem; border-radius:8px; box-shadow:0 2px 8px rgba(0,0,0,0.1);">
+            <button onclick="document.getElementById('expireAlertSection').style.display='none'" style="float:right; background:none; border:none; font-size:1.2em; cursor:pointer;">✖</button>
+            <h2 style="font-size:1.5em; color:#1976d2; margin-bottom:1rem;">⏰賞味期限／使用期限アラート</h2>
+            <form id="expireForm" style="display:flex; flex-wrap:wrap; gap:0.5rem; margin-bottom:1.2em;">
+            <input type="text" id="itemName" placeholder="例: 非常食" style="flex:1; min-width:150px; padding:0.3em;">
+            <input type="date" id="expireDate" style="flex:1; min-width:150px; padding:0.3em;">
+            <button type="submit" style="padding:0.3em 1em; background:#1976d2; color:#fff; border:none; border-radius:4px; cursor:pointer;">登録</button>
+            </form>
+            <div id="expireList" style="display:flex; flex-direction:column; gap:1rem;"></div>
+        </section>
+
+        <section id="familyInfoSection" style="margin-top:2.5rem; display:none; background:#f9f9f9; padding:1rem; border-radius:8px; box-shadow:0 2px 8px rgba(0,0,0,0.1);">
+            <button onclick="document.getElementById('familyInfoSection').style.display='none'" style="float:right; background:none; border:none; font-size:1.2em; cursor:pointer;">✖</button>
+            <h2 style="font-size:1.5em; color:#1976d2; margin-bottom:1rem;">👨‍👩‍👧‍👦家族・ペットの情報登録</h2>
+            <form id="familyInfoForm" style="display:flex; flex-direction:column; gap:0.5rem; margin-bottom:1.2em;">
+            <input type="text" id="familyName" placeholder="名前（例: 山田 太郎）" style="padding:0.3em;">
+            <input type="text" id="bloodType" placeholder="血液型（例: A型）" style="padding:0.3em;">
+            <input type="text" id="medications" placeholder="常備薬（例: アレルギー薬）" style="padding:0.3em;">
+            <input type="text" id="allergies" placeholder="アレルギー（例: ピーナッツ）" style="padding:0.3em;">
+            <input type="text" id="petInfo" placeholder="ペット情報（例: 犬、餌ストック3日分）" style="padding:0.3em;">
+            <button type="submit" style="padding:0.3em 1em; background:#1976d2; color:#fff; border:none; border-radius:4px; cursor:pointer;">登録</button>
+            </form>
+            <div id="familyInfoList" style="display:flex; flex-direction:column; gap:1rem;"></div>
+        </section>
+
+        <script>
+            function showSection(sectionId) {
+            document.querySelectorAll('section[id$="Section"]').forEach(section => {
+                section.style.display = 'none';
+            });
+            document.getElementById(sectionId).style.display = 'block';
+            }
+        </script>
+
+        <script>
+            const familyInfoForm = document.getElementById('familyInfoForm');
+            const familyName = document.getElementById('familyName');
+            const bloodType = document.getElementById('bloodType');
+            const medications = document.getElementById('medications');
+            const allergies = document.getElementById('allergies');
+            const petInfo = document.getElementById('petInfo');
+            const familyInfoList = document.getElementById('familyInfoList');
+            let familyInfos = JSON.parse(localStorage.getItem('familyInfos') || '[]');
+
+            function renderFamilyInfos() {
+                familyInfoList.innerHTML = '';
+                familyInfos.forEach((info, i) => {
+                    const div = document.createElement('div');
+                    div.style.marginBottom = '1em';
+                    div.innerHTML = `
+                        <strong>${info.name}</strong><br>
+                        血液型: ${info.bloodType}<br>
+                        常備薬: ${info.medications}<br>
+                        アレルギー: ${info.allergies}<br>
+                        ペット情報: ${info.petInfo}<br>
+                        <button style="margin-top:0.5em;" onclick="removeFamilyInfo(${i})">削除</button>
+                    `;
+                    familyInfoList.appendChild(div);
+                });
+            }
+
+            window.removeFamilyInfo = function(i) {
+                familyInfos.splice(i, 1);
+                localStorage.setItem('familyInfos', JSON.stringify(familyInfos));
+                renderFamilyInfos();
+            };
+
+            familyInfoForm.onsubmit = function(e) {
+                e.preventDefault();
+                if (!familyName.value) return;
+                familyInfos.push({
+                    name: familyName.value,
+                    bloodType: bloodType.value,
+                    medications: medications.value,
+                    allergies: allergies.value,
+                    petInfo: petInfo.value
+                });
+                localStorage.setItem('familyInfos', JSON.stringify(familyInfos));
+                renderFamilyInfos();
+                familyName.value = '';
+                bloodType.value = '';
+                medications.value = '';
+                allergies.value = '';
+                petInfo.value = '';
+            };
+
+            renderFamilyInfos();
+        </script>
     </main>
 
             <a id="backToMain"
@@ -212,9 +377,10 @@
             style="background: #fff; color: #3a3f47; border: 1px solid #3a3f47; display: block; width: fit-content; margin: 0 auto 18px;">
              元のページに戻る
         </a>
+
+
     <script>
         // チェック状態をローカルストレージに保存
-        const checklist = document.getElementById('checklist');
         const checkboxes = checklist.querySelectorAll('input[type="checkbox"]');
         // 保存された状態を復元
         checkboxes.forEach((cb, i) => {
