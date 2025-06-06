@@ -158,5 +158,88 @@
 
 <script src="script.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  // 言語設定の変更処理
+  document.getElementById('langSelect').addEventListener('change', function () {
+    const lang = this.value;
+    if (lang === 'en') {
+      document.querySelector('.site-title').textContent = 'Quake Guard';
+      document.querySelector('.navbar-text').textContent = 'Earthquake Preparedness Portal';
+      document.querySelector('a[href="./list.html"]').textContent = 'List';
+      document.querySelector('a[href="./phone.html"]').textContent = 'Phone';
+      document.querySelector('a[data-bs-target="#shelterModal"]').textContent = 'Shelter';
+      document.querySelector('a[data-bs-target="#settingsModal"]').textContent = 'Settings';
+      document.getElementById('searchInput').placeholder = 'Search';
+      document.querySelector('button[type="submit"]').textContent = 'Search';
+      document.getElementById('listModalLabel').textContent = 'Checklist & Notes';
+      document.getElementById('phoneModalLabel').textContent = 'Phone Numbers & Notes';
+      document.getElementById('shelterModalLabel').textContent = 'Enter Shelter Location';
+      document.getElementById('settingsModalLabel').textContent = 'Settings';
+      document.querySelector('label[for="langSelect"]').textContent = 'Language Settings';
+      document.querySelector('label[for="themeSelect"]').textContent = 'Color Theme';
+      document.querySelector('label[for="listMemo"]').textContent = 'Notes';
+      document.querySelector('label[for="phoneMemo"]').textContent = 'Notes';
+      document.querySelector('label[for="shelterInput"]').textContent = 'Enter shelter name or address';
+      document.querySelector('button[type="submit"]').textContent = 'Save Pin to Map';
+      document.getElementById('managerContact').textContent = 'Taro Yamada (Email: yamada@example.com / Phone: 090-1234-5678)';
+    } else {
+      // 日本語に戻す
+      document.querySelector('.site-title').textContent = 'Quake Guard';
+      document.querySelector('.navbar-text').textContent = '地震対策ポータル';
+      document.querySelector('a[href="./list.html"]').textContent = 'リスト';
+      document.querySelector('a[href="./phone.html"]').textContent = '電話';
+      document.querySelector('a[data-bs-target="#shelterModal"]').textContent = '避難場所';
+      document.querySelector('a[data-bs-target="#settingsModal"]').textContent = '設定';
+      document.getElementById('searchInput').placeholder = '検索';
+      document.querySelector('button[type="submit"]').textContent = '検索';
+      document.getElementById('listModalLabel').textContent = 'チェックリスト & メモ';
+      document.getElementById('phoneModalLabel').textContent = '電話番号 & メモ';
+      document.getElementById('shelterModalLabel').textContent = '避難場所を入力';
+      document.getElementById('settingsModalLabel').textContent = '設定';
+      document.querySelector('label[for="langSelect"]').textContent = '言語設定';
+      document.querySelector('label[for="themeSelect"]').textContent = '色テーマ';
+      document.querySelector('label[for="listMemo"]').textContent = 'メモ';
+      document.querySelector('label[for="phoneMemo"]').textContent = 'メモ';
+      document.querySelector('label[for="shelterInput"]').textContent = '避難場所名や住所を入力';
+      document.querySelector('button[type="submit"]').textContent = '地図にピンを立てて保存';
+      document.getElementById('managerContact').textContent = '山田 太郎（メール: yamada@example.com / 電話: 090-1234-5678）';
+    }
+  });
+
+  // 色テーマの変更処理
+  document.getElementById('themeSelect').addEventListener('change', function () {
+    const theme = this.value;
+    const siteTitle = document.querySelector('.site-title');
+    const navbarText = document.querySelector('.navbar-text');
+    if (theme === 'light') {
+      siteTitle.style.color = '#000';
+      navbarText.style.color = '#000';
+    } else {
+      siteTitle.style.color = '#fff';
+      navbarText.style.color = '#fff';
+    }
+  });
+
+  // ポップアップを消す処理
+  let walkingTimePopup; // ポップアップの参照を保持する変数
+
+  function createWalkingTimePopup(map, coordinates, walkingTime) {
+    if (walkingTimePopup) {
+      walkingTimePopup.remove(); // 既存のポップアップを削除
+    }
+    walkingTimePopup = new maplibregl.Popup()
+      .setLngLat(coordinates)
+      .setHTML(`<p>歩行時間: ${walkingTime}分</p>`)
+      .addTo(map);
+  }
+
+  document.getElementById('searchForm').addEventListener('submit', function (event) {
+    event.preventDefault();
+    if (walkingTimePopup) {
+      walkingTimePopup.remove(); // 検索時にポップアップを消す
+    }
+    // ...existing code for search functionality...
+  });
+</script>
 </body>
 </html>
