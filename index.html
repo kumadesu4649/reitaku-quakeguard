@@ -23,6 +23,100 @@
 }
 </style>
 
+<style>
+  #splash-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #2d2d2d;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+    transition: opacity 1.5s ease-out;
+  }
+  .fade-out {
+    opacity: 0;
+    pointer-events: none;
+  }
+  @keyframes textFadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  #splash-screen h1 {
+    animation: textFadeIn 1.5s ease-in-out;
+  }
+</style>
+
+<div id="splash-screen">
+  <h1 style="font-size: 3rem; font-weight: bold; color: #ffffff;">
+    <img src="./img/quake.png" alt="Quake Guard Logo" style="width: 100px; height: 100px; display: block; margin: 0 auto; filter: brightness(0) invert(1); border-radius: 50%;">
+    Quake Guard<br>
+    <span style="font-size: 1.5rem; color: #f7f7f7; display: block; text-align: center;">災害対策ポータル</span>
+  </h1>
+</div>
+
+<script>
+  window.addEventListener('load', () => {
+    const splash = document.getElementById('splash-screen');
+    setTimeout(() => {
+      splash.classList.add('fade-out');
+      setTimeout(() => splash.remove(), 1500);
+    }, 1000);
+  });
+</script>
+
+<!-- 使い方用モーダル -->
+<div class="modal fade" id="usageModal" tabindex="-1" aria-labelledby="usageModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content bg-dark text-light">
+      <div class="modal-header">
+        <h5 class="modal-title" id="usageModalLabel">使い方</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="閉じる"></button>
+      </div>
+      <div class="modal-body">
+        <p>避難場所マップの基本的な使用方法は以下の通りです：</p>
+        <div id="usageCarousel" class="carousel slide mb-3" data-bs-ride="carousel">
+          <div class="carousel-inner">
+            <div class="carousel-item active">
+              <img src="path/to/image1.png" class="d-block w-100" alt="使い方画像1">
+            </div>
+            <div class="carousel-item">
+              <img src="path/to/image2.png" class="d-block w-100" alt="使い方画像2">
+            </div>
+            <div class="carousel-item">
+              <img src="path/to/image3.png" class="d-block w-100" alt="使い方画像3">
+            </div>
+            <div class="carousel-item">
+              <img src="path/to/image4.png" class="d-block w-100" alt="使い方画像4">
+            </div>
+          </div>
+          <button class="carousel-control-prev" type="button" data-bs-target="#usageCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">前</span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#usageCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">次</span>
+          </button>
+        </div>
+        <ul>
+          <li>
+            <strong>避難場所</strong>
+            <ol>
+              <li>避難場所タブをクリックします。</li>
+              <li>表示される入力欄に場所を入力します。</li>
+              <li>指定した場所にピンが立てられます。</li>
+              <li>ピンをクリックすると、あなたの現在地からその避難場所までの経路が地図上に表示されます。</li>
+            </ol>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light navbar-fade-in">
     <div class="container d-flex flex-column align-items-center">
@@ -166,6 +260,19 @@
       </div>
     </div>
   </div>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  setTimeout(function() {
+    var usageModal = new bootstrap.Modal(document.getElementById('usageModal'));
+    usageModal.show();
+  }, 3000); // 1秒の遅延後にモーダルを表示
+});
+</script>
+<div class="sticky-bottom m-3" style="text-align: right;">
+  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#usageModal">
+    使い方
+  </button>
 </div>
 
 <script src="script.js"></script>
