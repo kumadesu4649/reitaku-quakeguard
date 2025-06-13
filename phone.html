@@ -5,23 +5,22 @@
     <title>Quake Guard - 災害時の電話案内サイト</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
+        /* 背景色を濃いグレーに統一 */
         body {
+            font-family: 'Segoe UI', Arial, sans-serif;
             background: #2e3238;
-            color: #f8f9fa;
-            font-family: 'Segoe UI', 'Meiryo', sans-serif;
             margin: 0;
             padding: 0;
         }
         .site-title-bar {
-            background: #3a3f47;
+            background: #3a3f47; 
             color: #fff;
             display: flex;
             align-items: center;
-            padding: 36px 0 26px 0; /* ←縦のpaddingを増やして高さをアップ */
+            padding: 36px 0 26px 0;
             margin-bottom: 20px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.13);
             position: relative;
-            /* 追加: 幅を広げる */
             width: 100vw;
             min-width: 100vw;
             left: 50%;
@@ -62,7 +61,7 @@
         .back-link {
             margin-left: 16px;
             margin-right: 16px;
-            background: #fff;
+            background: #f3f3f3;
             color: #3a3f47;
             padding: 6px 14px;
             border-radius: 4px;
@@ -76,107 +75,120 @@
             background: #e3e3e3;
             color: #222;
         }
-        .main-flex {
-            display: flex;
-            justify-content: center;
-            gap: 16px;
-            padding: 0 4vw;
-        }
-        .main-content,
-        .main-content.right {
+        .main-content {
             background: #fff;
-            color: #1a2340; /* 濃い紺色に変更 */
-            border-radius: 12px;
-            box-shadow: 0 4px 24px rgba(0,0,0,0.15);
-            padding: 20px 12px 18px 12px;
-            margin-bottom: 16px;
+            color: #1a2340;
+            border-radius: 14px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.13);
+            padding: 32px 24px 28px 24px;
+            margin: 40px auto 0;
             width: 100%;
-            max-width: 480px;
+            max-width: 600px;  /* ←ここを520pxから700pxに変更 */
             box-sizing: border-box;
         }
-        .main-content.right {
-            max-width: 340px;
-            min-width: 0;
-            padding: 20px 8px 18px 8px;
-            background: #fff; /* ←右側も白に */
-            color: #222;      /* ←文字色も黒系に */
+        h2, h3, h4 {
+            color: #1976d2;
+            margin-top: 24px;
+            margin-bottom: 12px;
+            font-weight: bold;
+            letter-spacing: 0.04em;
         }
         h2 {
-            color: #90caf9;
-            border-left: 4px solid #90caf9;
+            font-size: 1.25em;
+            border-left: 4px solid #1976d2;
             padding-left: 10px;
-            margin-top: 24px;
-            font-size: 1.1em;
+        }
+        h3 {
+            color: #1976d2 !important;
+            font-weight: bold;
+        }
+        h4 {
+            font-size: 1em;
+        }
+        .desc {
+            color: #1a2340;
+            margin-bottom: 1.2em;
+            line-height: 1.7;
+            font-size: 1.05em;
+        }
+        .example {
+            margin-top: 0.5em;
+            color: #1976d2;
+            font-size: 0.98em;
         }
         #phoneForm label {
             font-size: 1em;
-            color: #e6e6e6;
-        }
-        #phoneForm input[type="tel"] {
-            width: 100%;
-            max-width: 220px;
-            padding: 7px 10px;
-            border: 1px solid #555;
-            border-radius: 4px;
-            background: #fff;
-            color: #1a2340; /* 入力欄の文字も濃い紺色 */
-            font-size: 1em;
-            margin-right: 8px;
+            color: #1a2340;
             margin-top: 8px;
+            display: block;
+        }
+        #phoneForm input[type="tel"],
+        #phoneForm input[type="text"] {
+            width: 100%;
+            max-width: 260px;
+            padding: 8px 12px;
+            border: 1.5px solid #1976d2;
+            border-radius: 5px;
+            background: #f7faff;
+            color: #1a2340;
+            font-size: 1em;
+            margin-bottom: 12px;
+            margin-top: 4px;
             box-sizing: border-box;
+            transition: border 0.2s;
+        }
+        #phoneForm input[type="tel"]:focus,
+        #phoneForm input[type="text"]:focus {
+            border: 1.5px solid #1565c0;
+            outline: none;
         }
         #phoneForm button {
             background: #1976d2;
             color: #fff;
             border: none;
             border-radius: 4px;
-            padding: 7px 18px;
+            padding: 8px 22px;
             font-size: 1em;
             font-weight: bold;
             cursor: pointer;
             transition: background 0.2s;
             margin-top: 8px;
+            margin-bottom: 12px;
+            letter-spacing: 0.05em;
         }
         #phoneForm button:active {
             background: #1565c0;
         }
-        #phoneList {
-            margin-top: 12px;
-            padding-left: 0;
+        #defaultPhoneTable,
+        #defaultPhoneTable th,
+        #defaultPhoneTable td,
+        #userPhoneTable,
+        #userPhoneTable th,
+        #userPhoneTable td {
+            border: 1.5px solid #1976d2;
         }
-        #phoneList li {
-            margin: 6px 0;
-            padding: 10px 10px;
-            border-radius: 4px;
-            font-size: 1.08em;
-            list-style-type: decimal;
-            color: #f8f9fa;
-            word-break: break-all;
-            cursor: pointer;
-            transition: background 0.15s;
+        #defaultPhoneTable,
+        #userPhoneTable {
+            border-collapse: collapse;
+            background: #fff;
+            margin-bottom: 18px;
         }
-        #phoneList li.default-phone {
-            background: #f3f3f3;
-            color: #333;
-        }
-        #phoneList li.user-phone {
-            background: #e3f2fd;
+        #defaultPhoneTable th,
+        #userPhoneTable th {
+            background: #e3f0fb;
             color: #1976d2;
             font-weight: bold;
+            padding: 8px 6px;
         }
-        #phoneList li.user-phone:hover {
-            background: #1976d2;
+        #defaultPhoneTable td,
+        #userPhoneTable td {
+            color: #1a2340 !important;
+            font-weight: 700;
         }
-        .example {
-            margin-top: 0.5em;
-            color: #e6e6e6;
-            font-size: 0.95em;
-        }
-        .desc {
-            color: #e6e6e6;
-            margin-bottom: 1.2em;
-            line-height: 1.7;
-            font-size: 1em;
+        #userPhoneTable td {
+            color: #1976d2;
+            font-weight: bold;
+            cursor: pointer;
         }
         /* モーダルのスマホ対応 */
         #callConfirmModal {
@@ -213,40 +225,25 @@
         #callConfirmModal button#callNo {
             background: #555;
         }
-        @media (max-width: 700px) {
-            .main-flex {
-                flex-direction: column;
-                gap: 0;
-                padding: 0 2vw;
-            }
+        @media (max-width: 600px) {
             .main-content {
                 max-width: 100vw;
-                min-width: 0;
-                margin-bottom: 12px;
-                padding: 16px 4vw 14px 4vw;
+                padding-left: 2vw;
+                padding-right: 2vw;
+                margin-left: 0;
+                margin-right: 0;
             }
-            .main-content.right {
-                max-width: 100vw;
-                padding: 16px 4vw 14px 4vw;
+            #defaultPhoneTable,
+            #userPhoneTable {
+                font-size: 0.98em;
+                word-break: break-all;
             }
-            .site-title-bar .site-title {
-                font-size: 1.3em;
-            }
-            #callConfirmModal .modal-inner {
-                padding: 18px 4vw;
-            }
-        }
-        /* 登録フォーム左側の説明文・例文・ラベルを濃い紺色に */
-        .main-content .desc,
-        .main-content .example,
-        .main-content #phoneForm label {
-            color: #1a2340 !important;
         }
     </style>
 </head>
 <body>
 
-    <style>
+<style>
 @keyframes fadeIn {
     from { opacity: 0; }
     to { opacity: 1; }
@@ -254,28 +251,25 @@
 .navbar-fade-in {
     animation: fadeIn 1.5s ease-in-out;
 }
+#splash-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #2d2d2d;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+    transition: opacity 1.5s ease-out;
+}
+.fade-out {
+    opacity: 0;
+    pointer-events: none;
+}
 </style>
 
-<style>
-    #splash-screen {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: #2d2d2d;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 10000;
-      transition: opacity 1.5s ease-out;
-    }
-    .fade-out {
-      opacity: 0;
-      pointer-events: none;
-    }
-  </style>
-  
 <div id="splash-screen">
     <h1 style="font-size: 3rem; font-weight: bold; color: #ffffff; text-align: center;">
         <img src="./img/tel.png" alt="Quake Guard Logo" style="width: 100px; height: 100px; display: block; margin: 0 auto 1rem; filter: brightness(0) invert(1); border-radius: 50%;">
@@ -284,196 +278,209 @@
         <span style="font-size: 1.5rem; color: #f7f7f7;">Emergency Contact</span>
     </h1>
 </div>
-  
-  <script>
-    window.addEventListener('load', () => {
-      const splash = document.getElementById('splash-screen');
-      setTimeout(() => {
+<script>
+window.addEventListener('load', () => {
+    const splash = document.getElementById('splash-screen');
+    setTimeout(() => {
         splash.classList.add('fade-out');
-        // Optionally remove the element after the fade-out completes
         setTimeout(() => splash.remove(), 1500);
-      }, 1000);
-    });
-  </script>
+    }, 1000);
+});
+</script>
 
+<div class="site-title-bar navbar-fade-in">
+    <a href="./index.html" class="site-title" style="position: absolute; left: 0; right: 0; margin: auto; width: max-content; text-decoration: none; color: #fff;">
+        Quake Guard
+    </a>
+    <p style="text-align: center; color: #fff; font-size: 1em; margin: 60px auto 0;">
+        緊急連絡先リスト
+    </p>
+</div>
 
-    <div class="site-title-bar navbar-fade-in">
-        <a href="./index.html" class="site-title" style="position: absolute; left: 0; right: 0; margin: auto; width: max-content; text-decoration: none; color: #fff;">
-            Quake Guard
-        </a>
-        <p style="text-align: center; color: #fff; font-size: 1em; margin: 60px auto 0;">
-            緊急連絡先リスト
-        </p>
-    </div>
+<div class="main-content" style="margin: 32px auto 0; overflow-x: auto;">
+    <p class="desc">
+        災害時には電話回線が混雑し、つながりにくくなります。
+        短く要点を伝え、不要不急の通話は控えましょう。
+        災害用伝言ダイヤル（171）や各種相談窓口も活用してください。<br>
+        このページでは、災害時に役立つ電話番号をまとめて<b>確認</b>・<b>登録</b>できます。
+    </p>
+    <h2>📞電話番号登録フォーム</h2>
+    <form id="phoneForm">
+        <label for="name">名前:</label>
+        <input type="text" id="name" name="name" required>
+        <label for="phone">電話番号:</label>
+        <input type="tel" id="phone" name="phone" required pattern="0\d{9,10}|0\d{1,3}-\d{3,4}-\d{4}">
+        <button type="submit">登録</button>
+    </form>
+    <p class="example">
+        入力例：090-1234-5678、03-1234-5678、052-1234-5677
+    </p>
 
-    <div class="main-flex">
-        <!-- 左側：説明と電話番号登録フォーム -->
-        <div class="main-content">
-            <p class="desc">
-                災害時には電話回線が混雑し、つながりにくくなることがあります。<br>
-                緊急時は短く要点を伝え、不要不急の通話は控えましょう。<br>
-                また、災害用伝言ダイヤル（171）や各種相談窓口も活用してください。<br>
-                このページでは、災害時に役立つ電話番号をまとめて確認・登録できます。
-            </p>
-            <h2>電話番号登録フォーム</h2>
-            <form id="phoneForm">
-                <label for="name">名前:</label>
-                <input type="text" id="name" name="name" required style="margin-bottom:8px; width:100%; max-width:220px; display:block; color:#1a2340; background:#fff; border:1px solid #555; border-radius:4px; padding:7px 10px; font-size:1em;">
-                <label for="phone">電話番号:</label>
-                <input type="tel" id="phone" name="phone" required pattern="0\d{9,10}|0\d{1,3}-\d{3,4}-\d{4}">
-                <button type="submit">登録</button>
-            </form>
-            <p class="example">
-                入力例：090-1234-5678、03-1234-5678、052-1234-5677
-            </p>
+    <h3 style="color:#90caf9; margin-top:32px;">🔢登録済み電話番号</h3>
+    <table id="defaultPhoneTable" style="width:100%; border-collapse:collapse; margin-bottom:16px;">
+        <thead>
+            <tr>
+                <th style="text-align:left; padding:6px; color:#1976d2;">連絡先名</th>
+                <th style="text-align:left; padding:6px; color:#1976d2;">電話番号</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>消防・救急</td>
+                <td>119</td>
+            </tr>
+            <tr>
+                <td>警察</td>
+                <td>110</td>
+            </tr>
+            <tr>
+                <td>災害用伝言ダイヤル</td>
+                <td>171</td>
+            </tr>
+            <tr>
+                <td>救急相談センター</td>
+                <td>#7119</td>
+            </tr>
+            <tr>
+                <td>こども医療電話相談</td>
+                <td>#8000</td>
+            </tr>
+        </tbody>
+    </table>
+    <h4 style="color:#1976d2; margin:8px 0 4px;">➕あなたが登録した連絡先</h4>
+    <table id="userPhoneTable" style="width:100%; border-collapse:collapse;">
+        <thead>
+            <tr>
+                <th style="text-align:left; padding:6px; color:#1976d2;">連絡先名</th>
+                <th style="text-align:left; padding:6px; color:#1976d2;">電話番号</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- JSでここに追加 -->
+        </tbody>
+    </table>
+    <div id="callConfirmModal">
+        <div class="modal-inner">
+            <div id="callConfirmText" style="margin-bottom:18px;"></div>
+            <button id="callYes">はい</button>
+            <button id="callNo">いいえ</button>
         </div>
-        <!-- 中央の仕切り線 -->
-        <div style="width:1.5px; background:linear-gradient(to bottom,#90caf9,#3a3f47); border-radius:1px; min-height:180px; align-self:stretch; display:block;"></div>
-        <!-- 右側：登録済み電話番号リスト -->
-        <div class="main-content right" style="overflow-x: auto;">
-            <h3 style="color:#90caf9; margin-top:0;">登録済み電話番号</h3>
-            <ul id="phoneList" style="margin-top: 12px; padding-left: 0; box-sizing: border-box; word-break: break-all; overflow-wrap: break-word;">
-                <li class="default-phone">119（消防・救急）</li>
-                <li class="default-phone">110（警察）</li>
-                <li class="default-phone">171（災害用伝言ダイヤル）</li>
-                <li class="default-phone">#7119（救急相談センター）</li>
-                <li class="default-phone">#8000（こども医療電話相談）</li>
-            </ul>
-            <div id="callConfirmModal">
-                <div class="modal-inner">
-                    <div id="callConfirmText" style="margin-bottom:18px;"></div>
-                    <button id="callYes">はい</button>
-                    <button id="callNo">いいえ</button>
-                </div>
-            </div>
-        </div>
     </div>
-        <a id="backToMain"
-            href="./index.html"
-            class="back-link"
-            style="background: #fff; color: #3a3f47; border: 1px solid #3a3f47; display: block; width: fit-content; margin: 0 auto 18px;">
-             元のページに戻る
-        </a>
-    <script>
-    const form = document.getElementById('phoneForm');
-    const phoneList = document.getElementById('phoneList');
-    const phoneInput = document.getElementById('phone');
-    const nameInput = document.getElementById('name');
-    const phones = [];
+</div>
+<a id="backToMain"
+    href="./index.html"
+    class="back-link"
+    style="background: #f3f3f3; color: #3a3f47; border: 1px solid #3a3f47; display: block; width: fit-content; margin: 0 auto 18px;">
+     元のページに戻る
+</a>
+<script>
+const form = document.getElementById('phoneForm');
+const phoneInput = document.getElementById('phone');
+const nameInput = document.getElementById('name');
+const userPhoneTableBody = document.querySelector('#userPhoneTable tbody');
+const phones = [];
 
-    // 入力時に自動でハイフンを挿入
-    phoneInput.addEventListener('input', function(e) {
-        let value = phoneInput.value.replace(/[^0-9]/g, '');
-        // 固定電話（10桁）と携帯電話（11桁）で分岐
-        if (value.length <= 10) {
-            // 固定電話例: 03-1234-5678, 06-1234-5678, 052-1234-5678
-            if (value.startsWith('03') || value.startsWith('06')) {
-                value = value.replace(/^(\d{2})(\d{4})(\d{0,4})$/, function(_, a, b, c) {
-                    return c ? `${a}-${b}-${c}` : b ? `${a}-${b}` : a;
-                });
-            } else if (value.length > 2) {
-                value = value.replace(/^(\d{3})(\d{3,4})(\d{0,4})$/, function(_, a, b, c) {
-                    return c ? `${a}-${b}-${c}` : b ? `${a}-${b}` : a;
-                });
-            }
-        } else {
-            // 携帯電話例: 090-1234-5678, 080-1234-5678
-            value = value.replace(/^(\d{3})(\d{4})(\d{0,4})$/, function(_, a, b, c) {
+// 入力時に自動でハイフンを挿入
+phoneInput.addEventListener('input', function(e) {
+    let value = phoneInput.value.replace(/[^0-9]/g, '');
+    if (value.length <= 10) {
+        if (value.startsWith('03') || value.startsWith('06')) {
+            value = value.replace(/^(\d{2})(\d{4})(\d{0,4})$/, function(_, a, b, c) {
+                return c ? `${a}-${b}-${c}` : b ? `${a}-${b}` : a;
+            });
+        } else if (value.length > 2) {
+            value = value.replace(/^(\d{3})(\d{3,4})(\d{0,4})$/, function(_, a, b, c) {
                 return c ? `${a}-${b}-${c}` : b ? `${a}-${b}` : a;
             });
         }
-        phoneInput.value = value;
-    });
-
-    form.addEventListener('submit', function(e) {
-        e.preventDefault();
-        const phone = phoneInput.value.trim();
-        const name = nameInput.value.trim();
-        if(phone && name && !phones.some(item => item.phone === phone && item.name === name)) {
-            phones.push({ name, phone });
-            displayPhones();
-            phoneInput.value = '';
-            nameInput.value = '';
-        }
-    });
-
-    phoneList.addEventListener('click', function(e) {
-        if (e.target.tagName === 'LI' && e.target.classList.contains('user-phone')) {
-            const tel = e.target.getAttribute('data-phone');
-            document.getElementById('callConfirmText').textContent = `この電話番号に電話をかけますか？\n${tel}`;
-            document.getElementById('callConfirmModal').style.display = 'flex';
-            document.getElementById('callYes').onclick = function() {
-                window.location.href = 'tel:' + tel.replace(/[^\d#]/g, '');
-                document.getElementById('callConfirmModal').style.display = 'none';
-            };
-            document.getElementById('callNo').onclick = function() {
-                document.getElementById('callConfirmModal').style.display = 'none';
-            };
-        }
-    });
-
-    function displayPhones() {
-        // 既定の災害用電話番号
-        const defaultPhones = [
-            '119（消防・救急）',
-            '110（警察）',
-            '171（災害用伝言ダイヤル）',
-            '#7119（救急相談センター）',
-            '#8000（こども医療電話相談）'
-        ];
-        // 既定＋ユーザー登録分を表示（既定はクラス付与、ユーザーはuser-phoneクラス）
-        phoneList.innerHTML =
-            defaultPhones.map(p => `<li class="default-phone">${p}</li>`).join('') +
-            phones.map(p => `<li class="user-phone" data-phone="${p.phone}">${p.name}：${p.phone}</li>`).join('');
+    } else {
+        value = value.replace(/^(\d{3})(\d{4})(\d{0,4})$/, function(_, a, b, c) {
+            return c ? `${a}-${b}-${c}` : b ? `${a}-${b}` : a;
+        });
     }
+    phoneInput.value = value;
+});
+
+form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    const phone = phoneInput.value.trim();
+    const name = nameInput.value.trim();
+    if(phone && name && !phones.some(item => item.phone === phone && item.name === name)) {
+        phones.push({ name, phone });
+        displayPhones();
+        phoneInput.value = '';
+        nameInput.value = '';
+    }
+});
+
+function displayPhones() {
+    userPhoneTableBody.innerHTML = phones
+        .map(p => `<tr class="user-phone-row" data-phone="${p.phone}">
+            <td style="padding:6px;">${p.name}</td>
+            <td style="padding:6px; color:#1976d2; font-weight:bold; cursor:pointer;" onclick="callUserPhone('${p.phone}')">${p.phone}</td>
+        </tr>`)
+        .join('');
+}
+
+// 電話番号クリック時の発信確認
+function callUserPhone(phone) {
+    document.getElementById('callConfirmText').textContent = `この電話番号に電話をかけますか？\n${phone}`;
+    document.getElementById('callConfirmModal').style.display = 'flex';
+    document.getElementById('callYes').onclick = function() {
+        window.location.href = 'tel:' + phone.replace(/[^\d#]/g, '');
+        document.getElementById('callConfirmModal').style.display = 'none';
+    };
+    document.getElementById('callNo').onclick = function() {
+        document.getElementById('callConfirmModal').style.display = 'none';
+    };
+}
 </script>
-    <footer style="background: linear-gradient(135deg, #3a3f47, #2e3238); padding: 24px 0; text-align: center; color: #fff; margin-top: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.2);">
-        <div style="max-width: 960px; margin: 0 auto; padding: 0 16px;">
-            <nav style="display: flex; flex-wrap: wrap; justify-content: center; margin-bottom: 12px; font-family: 'Segoe UI', 'Meiryo', sans-serif;">
-                <a href="./index.html" style="display: flex; align-items: center; justify-content: center; flex: 1 1 200px; padding: 12px 20px; margin: 8px; background: #d21922; border-radius: 4px; color: #fff; text-decoration: none; transition: background 0.3s, transform 0.1s;"
-                   onmouseover="this.style.background='#1565c0';" onmouseout="this.style.background='#1976d2';" 
-                   onmousedown="this.style.transform='scale(0.97)';" onmouseup="this.style.transform='scale(1)';">
-                    <span style="display: inline-block; width: 32px; height: 32px; line-height: 32px; border-radius: 50%; background: #fff; color: #91d219; text-align: center; margin-right: 8px;">
-                        🗺
-                    </span>
-                    <span>防災マップ</span>
-                </a>
-                <a href="./phone.html" style="display: flex; align-items: center; justify-content: center; flex: 1 1 200px; padding: 12px 20px; margin: 8px; background: #d29819; border-radius: 4px; color: #fff; text-decoration: none; transition: background 0.3s, transform 0.1s;"
-                   onmouseover="this.style.background='#1565c0';" onmouseout="this.style.background='#1976d2';" 
-                   onmousedown="this.style.transform='scale(0.97)';" onmouseup="this.style.transform='scale(1)';">
-                    <span style="display: inline-block; width: 32px; height: 32px; line-height: 32px; border-radius: 50%; background: #fff; color: #1976d2; text-align: center; margin-right: 8px;">
-                        📞
-                    </span>
-                    <span>連絡先</span>
-                </a>
-                <a href="./list.html" style="display: flex; align-items: center; justify-content: center; flex: 1 1 200px; padding: 12px 20px; margin: 8px; background: #72d219; border-radius: 4px; color: #fff; text-decoration: none; transition: background 0.3s, transform 0.1s;"
-                   onmouseover="this.style.background='#1565c0';" onmouseout="this.style.background='#1976d2';" 
-                   onmousedown="this.style.transform='scale(0.97)';" onmouseup="this.style.transform='scale(1)';">
-                    <span style="display: inline-block; width: 32px; height: 32px; line-height: 32px; border-radius: 50%; background: #fff; color: #1976d2; text-align: center; margin-right: 8px;">
-                        🎒
-                    </span>
-                    <span>防災グッズ</span>
-                </a>
-            </nav>
-            <p style="font-size: 0.85em; margin: 8px 0;">© 2025 Reitaku Quake Guard. All Rights Reserved.</p>
-            <p style="font-size: 0.75em;">
-                <a href="#" style="color: #fff; text-decoration: none; margin: 0 10px; transition: color 0.3s;">利用規約</a>
-                |
-                <a href="#" style="color: #fff; text-decoration: none, margin: 0 10px; transition: color 0.3s;">プライバシーポリシー</a>
-            </p>
-        </div>
-        <script>
-            // Adding simple hover effects via JavaScript since inline styles can't handle :hover
-            document.querySelectorAll("footer a").forEach(function(link) {
-                link.addEventListener("mouseover", function() {
-                    this.style.color = "#90caf9";
-                });
-                link.addEventListener("mouseout", function() {
-                    this.style.color = "#fff";
-                });
+<footer style="background: linear-gradient(135deg, #3a3f47, #2e3238); padding: 24px 0; text-align: center; color: #fff; margin-top: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.2);">
+    <div style="max-width: 960px; margin: 0 auto; padding: 0 16px;">
+        <nav style="display: flex; flex-wrap: wrap; justify-content: center; margin-bottom: 12px; font-family: 'Segoe UI', 'Meiryo', sans-serif;">
+            <a href="./index.html" style="display: flex; align-items: center; justify-content: center; flex: 1 1 200px; padding: 12px 20px; margin: 8px; background: #d21922; border-radius: 4px; color: #fff; text-decoration: none; transition: background 0.3s, transform 0.1s;"
+               onmouseover="this.style.background='#1565c0';" onmouseout="this.style.background='#1976d2';" 
+               onmousedown="this.style.transform='scale(0.97)';" onmouseup="this.style.transform='scale(1)';">
+                <span style="display: inline-block; width: 32px; height: 32px; line-height: 32px; border-radius: 50%; background: #fff; color: #91d219; text-align: center; margin-right: 8px;">
+                    🗺
+                </span>
+                <span>防災マップ</span>
+            </a>
+            <a href="./phone.html" style="display: flex; align-items: center; justify-content: center; flex: 1 1 200px; padding: 12px 20px; margin: 8px; background: #d29819; border-radius: 4px; color: #fff; text-decoration: none; transition: background 0.3s, transform 0.1s;"
+               onmouseover="this.style.background='#1565c0';" onmouseout="this.style.background='#1976d2';" 
+               onmousedown="this.style.transform='scale(0.97)';" onmouseup="this.style.transform='scale(1)';">
+                <span style="display: inline-block; width: 32px; height: 32px; line-height: 32px; border-radius: 50%; background: #fff; color: #1976d2; text-align: center; margin-right: 8px;">
+                    📞
+                </span>
+                <span>連絡先</span>
+            </a>
+            <a href="./list.html" style="display: flex; align-items: center; justify-content: center; flex: 1 1 200px; padding: 12px 20px; margin: 8px; background: #72d219; border-radius: 4px; color: #fff; text-decoration: none; transition: background 0.3s, transform 0.1s;"
+               onmouseover="this.style.background='#1565c0';" onmouseout="this.style.background='#1976d2';" 
+               onmousedown="this.style.transform='scale(0.97)';" onmouseup="this.style.transform='scale(1)';">
+                <span style="display: inline-block; width: 32px; height: 32px; line-height: 32px; border-radius: 50%; background: #fff; color: #1976d2; text-align: center; margin-right: 8px;">
+                    🎒
+                </span>
+                <span>防災グッズ</span>
+            </a>
+        </nav>
+        <p style="font-size: 0.85em; margin: 8px 0;">© 2025 Reitaku Quake Guard. All Rights Reserved.</p>
+        <p style="font-size: 0.75em;">
+            <a href="#" style="color: #fff; text-decoration: none; margin: 0 10px; transition: color 0.3s;">利用規約</a>
+            |
+            <a href="#" style="color: #fff; text-decoration: none, margin: 0 10px; transition: color 0.3s;">プライバシーポリシー</a>
+        </p>
+    </div>
+    <script>
+        // Adding simple hover effects via JavaScript since inline styles can't handle :hover
+        document.querySelectorAll("footer a").forEach(function(link) {
+            link.addEventListener("mouseover", function() {
+                this.style.color = "#90caf9";
             });
-        </script>
-    </footer>
-    
+            link.addEventListener("mouseout", function() {
+                this.style.color = "#fff";
+            });
+        });
+    </script>
+</footer>
 </body>
 </html>
