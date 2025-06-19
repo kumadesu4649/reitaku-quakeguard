@@ -105,16 +105,53 @@
         h4 {
             font-size: 1em;
         }
+        /* 最初の説明文を水色・大きめ・柔らかいフォントに */
         .desc {
-            color: #1a2340;
+            color: #1991c6; /* さらに濃いめの水色に調整 */
+            font-size: 1.18em;
+            font-family: 'Segoe UI', 'Meiryo', 'Rounded Mplus 1c', 'Arial Rounded MT Bold', Arial, sans-serif;
             margin-bottom: 1.2em;
-            line-height: 1.7;
-            font-size: 1.05em;
+            line-height: 1.8;
+            font-weight: 500;
         }
         .example {
             margin-top: 0.5em;
             color: #1976d2;
             font-size: 0.98em;
+        }
+        #phoneForm {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: flex-end;
+            gap: 12px;
+        }
+        #phoneForm label {
+            margin-top: 0;
+            margin-bottom: 0;
+            display: block;
+        }
+        #phoneForm input[type="text"],
+        #phoneForm input[type="tel"] {
+            border: 2px solid #1976d2;
+            border-radius: 5px;
+            background: #f7faff;
+            color: #1a2340;
+            font-size: 0.98em;
+            padding: 6px 8px;
+            width: 100px;
+            max-width: 24vw;
+            box-sizing: border-box;
+            transition: border 0.2s;
+        }
+        #phoneForm input[type="text"]:focus,
+        #phoneForm input[type="tel"]:focus {
+            border: 2px solid #1565c0;
+            outline: none;
+        }
+        #phoneForm button {
+            font-size: 0.98em;
+            padding: 6px 16px;
+            height: 34px;
         }
         #phoneForm label {
             font-size: 1em;
@@ -147,17 +184,16 @@
             color: #fff;
             border: none;
             border-radius: 4px;
-            padding: 8px 22px;
+            padding: 7px 18px;
             font-size: 1em;
             font-weight: bold;
             cursor: pointer;
-            transition: background 0.2s;
-            margin-top: 8px;
-            margin-bottom: 12px;
-            letter-spacing: 0.05em;
+            transition: background 0.2s, box-shadow 0.2s;
+            box-shadow: 0 2px 8px rgba(25, 118, 210, 0.15);
         }
-        #phoneForm button:active {
+        #phoneForm button:hover {
             background: #1565c0;
+            box-shadow: 0 4px 12px rgba(25, 118, 210, 0.22);
         }
         #defaultPhoneTable,
         #defaultPhoneTable th,
@@ -173,22 +209,28 @@
             background: #fff;
             margin-bottom: 18px;
         }
+        /* 両方のリスト（テーブル）の文字サイズ・色・背景を統一 */
+        #defaultPhoneTable,
+        #userPhoneTable {
+            background: #f7faff;
+            color: #1a2340;
+        }
+
         #defaultPhoneTable th,
         #userPhoneTable th {
             background: #e3f0fb;
             color: #1976d2;
             font-weight: bold;
+            font-size: 1em;
             padding: 8px 6px;
         }
+
         #defaultPhoneTable td,
         #userPhoneTable td {
-            color: #1a2340 !important;
-            font-weight: 700;
-        }
-        #userPhoneTable td {
-            color: #1976d2;
-            font-weight: bold;
-            cursor: pointer;
+            color: #1a2340;
+            font-size: 1.15em;
+            font-weight: normal;
+            padding: 8px 6px;
         }
         /* モーダルのスマホ対応 */
         #callConfirmModal {
@@ -238,6 +280,25 @@
                 font-size: 0.98em;
                 word-break: break-all;
             }
+        }
+
+        #allPhoneTable {
+            border-collapse: collapse;
+            width: 100%;
+            background: #f7faff;
+            border: 2px solid #1976d2;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(25, 118, 210, 0.08);
+        }
+        #allPhoneTable th, #allPhoneTable td {
+            border: 1.5px solid #1976d2;
+            padding: 8px 6px;
+        }
+        #allPhoneTable th {
+            background: #e3f0fb;
+            color: #1976d2;
+            font-weight: bold;
         }
     </style>
 </head>
@@ -299,64 +360,65 @@ window.addEventListener('load', () => {
 
 <div class="main-content" style="margin: 32px auto 0; overflow-x: auto;">
     <p class="desc">
-        災害時には電話回線が混雑し、つながりにくくなります。
-        短く要点を伝え、不要不急の通話は控えましょう。
-        災害用伝言ダイヤル（171）や各種相談窓口も活用してください。<br>
+        災害時には電話回線が混雑し、つながりにくくなることがあります。
+        <span style="color:#1991c6; font-weight:bold;">短く要点を伝える</span>、<span style="color:#1991c6; font-weight:bold;">不要不急の通話は控える</span>など、みんなが連絡を取りやすくなるように心がけましょう。<br>
+        <span style="color:#1991c6; font-weight:bold;">災害用伝言ダイヤル（171）</span>や各種相談窓口も活用してください。
         このページでは、災害時に役立つ電話番号をまとめて<b>確認</b>・<b>登録</b>できます。
     </p>
-    <h2>📞電話番号登録フォーム</h2>
-    <form id="phoneForm">
-        <label for="name">名前:</label>
-        <input type="text" id="name" name="name" required>
-        <label for="phone">電話番号:</label>
-        <input type="tel" id="phone" name="phone" required pattern="0\d{9,10}|0\d{1,3}-\d{3,4}-\d{4}">
-        <button type="submit">登録</button>
-    </form>
-    <p class="example">
-        入力例：090-1234-5678、03-1234-5678、052-1234-5677
-    </p>
+    <h2>📞電話番号登録フォーム ＆ 登録済み電話番号リスト</h2>
+    <!-- 入力欄（テーブルの外に配置、ボタンなし） -->
+<form id="phoneForm" autocomplete="off" style="display: flex; align-items: center; gap: 10px; margin-bottom: 16px;">
+    <div style="display: flex; flex-direction: column; align-items: flex-start;">
+        <label for="name" style="margin-bottom: 2px;">名前:</label>
+        <input type="text" id="name" name="name" required placeholder="ここに入力" style="width: 225px; min-width: 0;">
+    </div>
+    <div style="display: flex; flex-direction: column; align-items: flex-start;">
+        <label for="phone" style="margin-bottom: 2px;">電話番号:</label>
+        <input type="tel" id="phone" name="phone" required placeholder="ここに入力" style="width: 225px; min-width: 0;">
+    </div>
+    <button type="submit" style="font-size: 1.15em; padding: 0 18px; height: 38px; font-weight: bold; letter-spacing: 0.05em;">
+        登録
+    </button>
+</form>
 
-    <h3 style="color:#90caf9; margin-top:32px;">🔢登録済み電話番号</h3>
-    <table id="defaultPhoneTable" style="width:100%; border-collapse:collapse; margin-bottom:16px;">
+    <!-- 入力例の隣に修正ボタンを設置 -->
+    <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 12px;">
+        <p class="example" style="margin: 0;">
+            入力例：090-1234-5678、03-1234-5678、052-1234-5677
+        </p>
+        <button id="editModeBtn" style="background: #1976d2; color: #fff; border: none; border-radius: 4px; padding: 7px 18px; font-size: 1em; font-weight: bold; cursor: pointer;">
+            修正
+        </button>
+    </div>
+    <table id="allPhoneTable" style="width:100%; border-collapse:collapse; margin-bottom:16px;">
         <thead>
             <tr>
                 <th style="text-align:left; padding:6px; color:#1976d2;">連絡先名</th>
                 <th style="text-align:left; padding:6px; color:#1976d2;">電話番号</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody id="allPhoneTableBody">
             <tr>
                 <td>消防・救急</td>
-                <td>119</td>
+                <td><span class="callable-number" data-tel="119" style="color:#1976d2; text-decoration:underline; cursor:pointer;">119</span></td>
             </tr>
             <tr>
                 <td>警察</td>
-                <td>110</td>
+                <td><span class="callable-number" data-tel="110" style="color:#1976d2; text-decoration:underline; cursor:pointer;">110</span></td>
             </tr>
             <tr>
                 <td>災害用伝言ダイヤル</td>
-                <td>171</td>
+                <td><span class="callable-number" data-tel="171" style="color:#1976d2; text-decoration:underline; cursor:pointer;">171</span></td>
             </tr>
             <tr>
                 <td>救急相談センター</td>
-                <td>#7119</td>
+                <td><span class="callable-number" data-tel="#7119" style="color:#1976d2; text-decoration:underline; cursor:pointer;">#7119</span></td>
             </tr>
             <tr>
                 <td>こども医療電話相談</td>
-                <td>#8000</td>
+                <td><span class="callable-number" data-tel="#8000" style="color:#1976d2; text-decoration:underline; cursor:pointer;">#8000</span></td>
             </tr>
-        </tbody>
-    </table>
-    <h4 style="color:#1976d2; margin:8px 0 4px;">➕あなたが登録した連絡先</h4>
-    <table id="userPhoneTable" style="width:100%; border-collapse:collapse;">
-        <thead>
-            <tr>
-                <th style="text-align:left; padding:6px; color:#1976d2;">連絡先名</th>
-                <th style="text-align:left; padding:6px; color:#1976d2;">電話番号</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- JSでここに追加 -->
+            <!-- ここに自分が登録した連絡先をJSで追加 -->
         </tbody>
     </table>
     <div id="callConfirmModal">
@@ -377,7 +439,7 @@ window.addEventListener('load', () => {
 const form = document.getElementById('phoneForm');
 const phoneInput = document.getElementById('phone');
 const nameInput = document.getElementById('name');
-const userPhoneTableBody = document.querySelector('#userPhoneTable tbody');
+const allPhoneTableBody = document.getElementById('allPhoneTableBody');
 const phones = [];
 
 // 入力時に自動でハイフンを挿入
@@ -413,27 +475,64 @@ form.addEventListener('submit', function(e) {
     }
 });
 
+let editMode = false;
+
+// 修正ボタンのイベント
+document.getElementById('editModeBtn').onclick = function() {
+    editMode = !editMode;
+    this.textContent = editMode ? '修正モード中' : '修正';
+    this.style.background = editMode ? '#1565c0' : '#1976d2';
+};
+
+// 例: displayPhones関数を修正
 function displayPhones() {
-    userPhoneTableBody.innerHTML = phones
-        .map(p => `<tr class="user-phone-row" data-phone="${p.phone}">
-            <td style="padding:6px;">${p.name}</td>
-            <td style="padding:6px; color:#1976d2; font-weight:bold; cursor:pointer;" onclick="callUserPhone('${p.phone}')">${p.phone}</td>
-        </tr>`)
-        .join('');
+    // 既存の自分の連絡先行を一度削除
+    Array.from(allPhoneTableBody.querySelectorAll('.user-phone-row')).forEach(row => row.remove());
+    allPhoneTableBody.insertAdjacentHTML(
+        'beforeend',
+        phones.map((p, i) => `
+            <tr class="user-phone-row" data-phone="${p.phone}">
+                <td class="editable-name" data-index="${i}" style="padding:6px; cursor:pointer;">${p.name}</td>
+                <td>
+                    <span class="callable-number editable-phone" data-index="${i}" data-tel="${p.phone}" style="color:#1976d2; text-decoration:underline; cursor:pointer;">${p.phone}</span>
+                </td>
+            </tr>
+        `).join('')
+    );
+
+    // 発信確認
+    allPhoneTableBody.querySelectorAll('.callable-number').forEach(el => {
+        el.onclick = function() {
+            if (editMode) return; // 修正モード中は発信しない
+            const tel = this.getAttribute('data-tel');
+            if (confirm(`「${tel}」に電話をかけますか？`)) {
+                window.location.href = `tel:${tel}`;
+            }
+        };
+    });
+
+    // 修正モード時のクリックでフォームにセット
+    if (editMode) {
+        allPhoneTableBody.querySelectorAll('.editable-name, .editable-phone').forEach(el => {
+            el.onclick = function() {
+                const idx = this.getAttribute('data-index');
+                nameInput.value = phones[idx].name;
+                phoneInput.value = phones[idx].phone;
+            };
+        });
+    }
 }
 
-// 電話番号クリック時の発信確認
-function callUserPhone(phone) {
-    document.getElementById('callConfirmText').textContent = `この電話番号に電話をかけますか？\n${phone}`;
-    document.getElementById('callConfirmModal').style.display = 'flex';
-    document.getElementById('callYes').onclick = function() {
-        window.location.href = 'tel:' + phone.replace(/[^\d#]/g, '');
-        document.getElementById('callConfirmModal').style.display = 'none';
-    };
-    document.getElementById('callNo').onclick = function() {
-        document.getElementById('callConfirmModal').style.display = 'none';
-    };
-}
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.callable-number').forEach(el => {
+        el.addEventListener('click', function() {
+            const tel = this.getAttribute('data-tel');
+            if (confirm(`「${tel}」に電話をかけますか？`)) {
+                window.location.href = `tel:${tel}`;
+            }
+        });
+    });
+});
 </script>
 <footer style="background: linear-gradient(135deg, #3a3f47, #2e3238); padding: 24px 0; text-align: center; color: #fff; margin-top: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.2);">
     <div style="max-width: 960px; margin: 0 auto; padding: 0 16px;">
