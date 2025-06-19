@@ -159,16 +159,15 @@
 <script src="script.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-  // 言語設定の変更処理
   document.getElementById('langSelect').addEventListener('change', function () {
     const lang = this.value;
     if (lang === 'en') {
       document.querySelector('.site-title').textContent = 'Quake Guard';
       document.querySelector('.navbar-text').textContent = 'Earthquake Preparedness Portal';
-      document.querySelector('a[href="./list.html"]').textContent = 'List';
-      document.querySelector('a[href="./phone.html"]').textContent = 'Phone';
-      document.querySelector('a[data-bs-target="#shelterModal"]').textContent = 'Shelter';
-      document.querySelector('a[data-bs-target="#settingsModal"]').textContent = 'Settings';
+      document.querySelector('a[href="./list.html"]').innerHTML = '<i class="bi bi-list"></i> List';
+      document.querySelector('a[href="./phone.html"]').innerHTML = '<i class="bi bi-telephone"></i> Phone';
+      document.querySelector('a[data-bs-target="#shelterModal"]').innerHTML = '<i class="bi bi-geo-alt"></i> Shelter';
+      document.querySelector('a[data-bs-target="#settingsModal"]').innerHTML = '<i class="bi bi-gear"></i> Settings';
       document.getElementById('searchInput').placeholder = 'Search';
       document.querySelector('button[type="submit"]').textContent = 'Search';
       document.getElementById('listModalLabel').textContent = 'Checklist & Notes';
@@ -186,10 +185,10 @@
       // 日本語に戻す
       document.querySelector('.site-title').textContent = 'Quake Guard';
       document.querySelector('.navbar-text').textContent = '地震対策ポータル';
-      document.querySelector('a[href="./list.html"]').textContent = 'リスト';
-      document.querySelector('a[href="./phone.html"]').textContent = '電話';
-      document.querySelector('a[data-bs-target="#shelterModal"]').textContent = '避難場所';
-      document.querySelector('a[data-bs-target="#settingsModal"]').textContent = '設定';
+      document.querySelector('a[href="./list.html"]').innerHTML = '<i class="bi bi-list"></i> リスト';
+      document.querySelector('a[href="./phone.html"]').innerHTML = '<i class="bi bi-telephone"></i> 電話';
+      document.querySelector('a[data-bs-target="#shelterModal"]').innerHTML = '<i class="bi bi-geo-alt"></i> 避難場所';
+      document.querySelector('a[data-bs-target="#settingsModal"]').innerHTML = '<i class="bi bi-gear"></i> 設定';
       document.getElementById('searchInput').placeholder = '検索';
       document.querySelector('button[type="submit"]').textContent = '検索';
       document.getElementById('listModalLabel').textContent = 'チェックリスト & メモ';
