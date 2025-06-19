@@ -261,33 +261,67 @@
             const newItemText = document.getElementById('newItemText');
             const checklist = document.getElementById('checklist');
 
-            // Create a dropdown for emoji selection
-            const emojiSelect = document.createElement('select');
-            emojiSelect.style.padding = '0.5em';
-            emojiSelect.style.border = '1px solid #ccc';
-            emojiSelect.style.borderRadius = '4px';
-            emojiSelect.innerHTML = `
-            <option value="💧">💧</option>
-            <option value="🥫">🥫</option>
-            <option value="🔦">🔦</option>
-            <option value="📻">📻</option>
-            <option value="⛑️">⛑️</option>
-            <option value="😷">😷</option>
-            <option value="🔋">🔋</option>
-            <option value="💴">💴</option>
-            <option value="👕">👕</option>
-            <option value="🧥">🧥</option>
-            <option value="🆕">🆕</option>
-            `;
-            addItemForm.insertBefore(emojiSelect, newItemText);
+            // 追加アイテムのアイコンを自由に入力・編集できるようにする（既存アイテムも編集可能に）
+            checklist.addEventListener('click', function(e) {
+                // アイコン部分がクリックされた場合
+                if (
+                    e.target.tagName === 'SPAN' &&
+                    e.target.previousElementSibling &&
+                    e.target.previousElementSibling.type === 'checkbox'
+                ) {
+                    // emoji入力用のテキストボックスを表示
+                    const input = document.createElement('input');
+                    input.type = 'text';
+                    input.value = e.target.textContent;
+                    input.maxLength = 2; // 絵文字1つ分
+                    input.style.fontSize = '1.3em';
+                    input.style.width = '2em';
+                    input.style.position = 'absolute';
+                    input.style.zIndex = 9999;
+                    // 位置調整
+                    const rect = e.target.getBoundingClientRect();
+                    input.style.left = rect.left + window.scrollX + 'px';
+                    input.style.top = rect.top + window.scrollY + 'px';
+                    document.body.appendChild(input);
+                    input.focus();
+                    input.select();
+                    input.addEventListener('blur', function() {
+                        if (input.value.trim()) {
+                            e.target.textContent = input.value.trim();
+                        }
+                        if (document.body.contains(input)) document.body.removeChild(input);
+                    });
+                    input.addEventListener('keydown', function(ev) {
+                        if (ev.key === 'Enter') {
+                            input.blur();
+                        }
+                    });
+                }
+            });
 
+            // 新規追加時にemojiを入力できるようにする
+            // emoji入力欄を追加
+            const emojiInput = document.createElement('input');
+            emojiInput.type = 'text';
+            emojiInput.id = 'emojiSelect';
+            emojiInput.value = '';
+            emojiInput.maxLength = 2;
+            emojiInput.style.width = '2.5em';
+            emojiInput.style.fontSize = '1.3em';
+            emojiInput.style.marginRight = '0.5em';
+            // 挿入
+            addItemForm.insertBefore(emojiInput, newItemText);
+
+            // submit時の処理を修正
             addItemForm.onsubmit = function(e) {
-            e.preventDefault();
-            if (!newItemText.value.trim()) return;
-            const li = document.createElement('li');
-            li.innerHTML = `<label><input type="checkbox"> <span style="font-size:1.3em; margin-right:0.5em;">${emojiSelect.value}</span>${newItemText.value}</label>`;
-            checklist.appendChild(li);
-            newItemText.value = '';
+                e.preventDefault();
+                if (!newItemText.value.trim()) return;
+                const emoji = emojiInput.value.trim() || '';
+                const li = document.createElement('li');
+                li.innerHTML = `<label><input type="checkbox"> <span style="font-size:1.3em; margin-right:0.5em;">${emoji}</span>${newItemText.value}</label>`;
+                checklist.appendChild(li);
+                newItemText.value = '';
+                emojiInput.value = '';
             };
         </script>
 
@@ -557,4 +591,4 @@
             });
         </script>
 </body>
-</html></ul>
+</html>
