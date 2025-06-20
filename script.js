@@ -87,19 +87,23 @@ function showRouteToShelter(shelterLat, shelterLon) {
                 type: 'line',
                 source: routeSourceId,
                 paint: {
-                    'line-color': '#ADFF2F',
+                    'line-color': '#FF0000', // 赤色
                     'line-width': 5
                 }
             });
 
             // ポップアップで所要時間を表示
             if (route.coordinates && route.coordinates.length > 1) {
+                // 既存の歩行時間ポップアップを削除
+                if (window.walkingTimePopup) {
+                    window.walkingTimePopup.remove();
+                }
                 const midIndex = Math.floor(route.coordinates.length / 2);
                 const midCoord = route.coordinates[midIndex];
-                const popupText = `徒歩 約${durationMinutes}分`;
-                new maplibregl.Popup({ closeOnClick: false, closeButton: false })
+                const popupText = `<div class="custom-popup" style="color: #000; background: #fff; padding: 4px 10px; border-radius: 6px; font-weight: bold;">徒歩 約${durationMinutes}分</div>`;
+                window.walkingTimePopup = new maplibregl.Popup({ closeOnClick: false, closeButton: false })
                     .setLngLat(midCoord)
-                    .setHTML(`<div class="custom-popup">${popupText}</div>`)
+                    .setHTML(popupText)
                     .addTo(map);
             }
         } catch (err) {

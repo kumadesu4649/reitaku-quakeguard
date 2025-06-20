@@ -297,10 +297,6 @@ document.addEventListener('DOMContentLoaded', function() {
       document.getElementById('settingsModalLabel').textContent = 'Settings';
       document.querySelector('label[for="langSelect"]').textContent = 'Language Settings';
       document.querySelector('label[for="themeSelect"]').textContent = 'Color Theme';
-      document.querySelector('label[for="listMemo"]').textContent = 'Notes';
-      document.querySelector('label[for="phoneMemo"]').textContent = 'Notes';
-      document.querySelector('label[for="shelterInput"]').textContent = 'Enter shelter name or address';
-      document.getElementById('managerContact').textContent = 'Taro Yamada (Email: yamada@example.com / Phone: 090-1234-5678)';
       document.querySelector('#usageModalLabel').textContent = 'How to Use';
       document.querySelector('#usageModal .modal-body p').textContent = 'Basic usage instructions for the shelter map are as follows:';
       document.querySelector('#usageModal .modal-body ul li strong').textContent = 'Find a Shelter';
@@ -311,6 +307,7 @@ document.addEventListener('DOMContentLoaded', function() {
       steps[2].textContent = 'Place a pin at the specified location.';
       steps[3].textContent = 'Click the pin to display the route from your current location to the shelter on the map.';
       document.querySelector('#usageModal .modal-body button').textContent = 'Try it';
+      document.getElementById('managerContact').textContent = 'Taro Yamada (Email: yamada@example.com / Phone: 090-1234-5678)';
     } else {
       // 日本語に戻す
       document.querySelector('.site-title').textContent = 'Quake Guard';
@@ -327,10 +324,6 @@ document.addEventListener('DOMContentLoaded', function() {
       document.getElementById('settingsModalLabel').textContent = '設定';
       document.querySelector('label[for="langSelect"]').textContent = '言語設定';
       document.querySelector('label[for="themeSelect"]').textContent = '色テーマ';
-      document.querySelector('label[for="listMemo"]').textContent = 'メモ';
-      document.querySelector('label[for="phoneMemo"]').textContent = 'メモ';
-      document.querySelector('label[for="shelterInput"]').textContent = '避難場所名や住所を入力';
-      document.getElementById('managerContact').textContent = '山田 太郎（メール: yamada@example.com / 電話: 090-1234-5678）';
       document.querySelector('#usageModalLabel').textContent = '使い方';
       document.querySelector('#usageModal .modal-body p').textContent = '避難場所マップの基本的な使用方法は以下の通りです';
       document.querySelector('#usageModal .modal-body ul li strong').textContent = '避難場所を探す';
@@ -341,6 +334,7 @@ document.addEventListener('DOMContentLoaded', function() {
       steps[2].textContent = '指定した場所にピンを立てる';
       steps[3].textContent = 'ピンをクリックすると、あなたの現在地からその避難場所までの経路が地図上に表示されます。';
       document.querySelector('#usageModal .modal-body button').textContent = '使ってみる';
+      document.getElementById('managerContact').textContent = '山田 太郎（メール: yamada@example.com / 電話: 090-1234-5678）';
     }
   });
 </script>
