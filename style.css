@@ -8,3 +8,73 @@
     box-shadow: 0 2px 8px rgba(0,0,0,0.12);
     position: relative; /* 追加 */
 }
+
+/* フッターのボタン（リンク）のホバー時のみ青系に */
+.footer-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1 1 200px;
+    padding: 12px 20px;
+    margin: 8px;
+    border-radius: 4px;
+    color: #fff;
+    text-decoration: none;
+    transition: background 0.3s, color 0.3s, transform 0.1s;
+    /* デフォルトの背景色は個別のstyle属性でOK */
+}
+.footer-link:hover {
+    background: #1565c0 !important;
+    color: #fff !important;
+    transform: scale(1.03);
+}
+
+/* 既存のstyle.cssの末尾などに追記 */
+.user-contact-card {
+    display: flex;
+    align-items: center;
+    background: #eaf7fa; /* 画像のリストと同じ明るい水色 */
+    border-radius: 12px;
+    padding: 8px 24px;
+    margin: 0 auto 14px auto;
+    max-width: 340px;
+    min-width: 220px;
+    box-shadow: none;
+    gap: 12px;
+    transition: background 0.2s;
+}
+.user-contact-card .callable-btn {
+    background: #1976d2;
+    border: none;
+    border-radius: 10px;
+    width: 40px;
+    height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 16px;
+    cursor: pointer;
+    transition: background 0.2s;
+    padding: 0;
+}
+.user-contact-card .callable-btn:hover {
+    background: #1565c0;
+}
+.user-contact-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+}
+.user-contact-name {
+    font-size: 1.08em;
+    font-weight: 500;
+    color: #222;
+    text-align: center;
+}
+.user-contact-phone {
+    font-size: 1em;
+    color: #222;
+    text-align: center;
+    margin-top: 2px;
+}

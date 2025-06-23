@@ -300,6 +300,46 @@
             color: #1976d2;
             font-weight: bold;
         }
+
+        /* 連絡先カードの背景を防災グッズリストと同じ水色に */
+        .user-contact-card {
+            display: flex;
+            align-items: center;
+            background: #f3fbfe; /* 画像と同じ明るい水色 */
+            border-radius: 12px;
+            padding: 8px 24px;
+            margin: 0 auto 14px auto;
+            width: 550px;        /* 横幅を統一 */
+            max-width: 550px;    /* 最大幅も統一 */
+            min-width: 320px;    /* 最小幅も統一 */
+            box-shadow: none;
+            gap: 12px;
+            transition: background 0.2s;
+            min-height: 56px;   /* 追加：カードの縦幅を統一 */
+            height: 56px;       /* 追加：必要なら固定高さに */
+            box-sizing: border-box;
+        }
+        .user-contact-card .callable-btn {
+            background: #fff;
+            border: 2px solid #1976d2;
+            border-radius: 10px;
+            width: 40px;
+            height: 40px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 16px;
+            cursor: pointer;
+            transition: background 0.2s, border 0.2s;
+            padding: 0;
+        }
+        .user-contact-card .callable-btn:hover {
+            background: #e3f0fb;
+            border: 2px solid #1565c0;
+        }
+        .user-contact-card .callable-btn span {
+            color: #1976d2 !important;
+        }
     </style>
 </head>
 <body>
@@ -359,27 +399,38 @@ window.addEventListener('load', () => {
 </div>
 
 <div class="main-content" style="margin: 32px auto 0; overflow-x: auto;">
-    <p class="desc">
-        災害時には電話回線が混雑し、つながりにくくなることがあります。
-        <span style="color:#1991c6; font-weight:bold;">短く要点を伝える</span>、<span style="color:#1991c6; font-weight:bold;">不要不急の通話は控える</span>など、みんなが連絡を取りやすくなるように心がけましょう。<br>
-        <span style="color:#1991c6; font-weight:bold;">災害用伝言ダイヤル（171）</span>や各種相談窓口も活用してください。
-        このページでは、災害時に役立つ電話番号をまとめて<b>確認</b>・<b>登録</b>できます。
-    </p>
-    <h2>📞電話番号登録フォーム ＆ 登録済み電話番号リスト</h2>
+    <h2 style="display: flex; align-items: center; gap: 8px;">
+        📞電話番号登録フォーム
+        <button id="formHelpBtn" type="button" style="background: #1976d2; color: #fff; border: none; border-radius: 50%; width: 28px; height: 28px; font-size: 1.1em; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 0;">
+            ？
+        </button>
+    </h2>
+
+    <!-- フォーム用ポップアップ本体 -->
+    <div id="formHelpPopup" style="display:none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #fff; color: #222; border-radius: 12px; box-shadow: 0 4px 24px rgba(0,0,0,0.18); padding: 28px 24px 18px 24px; z-index: 20000; min-width: 260px; max-width: 90vw;">
+        <button id="closeFormHelpPopup" style="position: absolute; top: 10px; right: 14px; background: none; border: none; font-size: 1.3em; color: #1976d2; cursor: pointer; font-weight: bold;">×</button>
+        <div style="padding-top: 8px; font-size: 1em; line-height: 1.7;">
+            名前と電話番号を入力して「登録」ボタンを押すと、下のリストに追加されます。<br>
+            電話番号は自動でハイフンが入ります。<br>
+            例：090-1234-5678、03-1234-5678 など<br>
+            同じ番号・名前の重複登録はできません。
+        </div>
+    </div>
+
     <!-- 入力欄（テーブルの外に配置、ボタンなし） -->
-<form id="phoneForm" autocomplete="off" style="display: flex; align-items: center; gap: 10px; margin-bottom: 16px;">
-    <div style="display: flex; flex-direction: column; align-items: flex-start;">
-        <label for="name" style="margin-bottom: 2px;">名前:</label>
-        <input type="text" id="name" name="name" required placeholder="ここに入力" style="width: 225px; min-width: 0;">
-    </div>
-    <div style="display: flex; flex-direction: column; align-items: flex-start;">
-        <label for="phone" style="margin-bottom: 2px;">電話番号:</label>
-        <input type="tel" id="phone" name="phone" required placeholder="ここに入力" style="width: 225px; min-width: 0;">
-    </div>
-    <button type="submit" style="font-size: 1.15em; padding: 0 18px; height: 38px; font-weight: bold; letter-spacing: 0.05em;">
-        登録
-    </button>
-</form>
+    <form id="phoneForm" autocomplete="off" style="display: flex; align-items: center; gap: 10px; margin-bottom: 16px;">
+        <div style="display: flex; flex-direction: column; align-items: flex-start;">
+            <label for="name" style="margin-bottom: 2px;">名前:</label>
+            <input type="text" id="name" name="name" required placeholder="ここに入力" style="width: 225px; min-width: 0;">
+        </div>
+        <div style="display: flex; flex-direction: column; align-items: flex-start;">
+            <label for="phone" style="margin-bottom: 2px;">電話番号:</label>
+            <input type="tel" id="phone" name="phone" required placeholder="ここに入力" style="width: 225px; min-width: 0;">
+        </div>
+        <button type="submit" style="font-size: 1.15em; padding: 0 18px; height: 38px; font-weight: bold; letter-spacing: 0.05em;">
+            登録
+        </button>
+    </form>
 
     <!-- 入力例の隣に修正ボタンを設置 -->
     <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 12px;">
@@ -390,37 +441,49 @@ window.addEventListener('load', () => {
             修正
         </button>
     </div>
-    <table id="allPhoneTable" style="width:100%; border-collapse:collapse; margin-bottom:16px;">
-        <thead>
-            <tr>
-                <th style="text-align:left; padding:6px; color:#1976d2;">連絡先名</th>
-                <th style="text-align:left; padding:6px; color:#1976d2;">電話番号</th>
-            </tr>
-        </thead>
-        <tbody id="allPhoneTableBody">
-            <tr>
-                <td>消防・救急</td>
-                <td><span class="callable-number" data-tel="119" style="color:#1976d2; text-decoration:underline; cursor:pointer;">119</span></td>
-            </tr>
-            <tr>
-                <td>警察</td>
-                <td><span class="callable-number" data-tel="110" style="color:#1976d2; text-decoration:underline; cursor:pointer;">110</span></td>
-            </tr>
-            <tr>
-                <td>災害用伝言ダイヤル</td>
-                <td><span class="callable-number" data-tel="171" style="color:#1976d2; text-decoration:underline; cursor:pointer;">171</span></td>
-            </tr>
-            <tr>
-                <td>救急相談センター</td>
-                <td><span class="callable-number" data-tel="#7119" style="color:#1976d2; text-decoration:underline; cursor:pointer;">#7119</span></td>
-            </tr>
-            <tr>
-                <td>こども医療電話相談</td>
-                <td><span class="callable-number" data-tel="#8000" style="color:#1976d2; text-decoration:underline; cursor:pointer;">#8000</span></td>
-            </tr>
-            <!-- ここに自分が登録した連絡先をJSで追加 -->
-        </tbody>
-    </table>
+
+    <!-- 登録済み電話番号リストのタイトル部分を修正 -->
+    <h2 style="margin-top:32px; display: flex; align-items: center; gap: 8px;">
+        🔢登録済み電話番号リスト
+        <button id="helpBtn" type="button" style="background: #1976d2; color: #fff; border: none; border-radius: 50%; width: 28px; height: 28px; font-size: 1.1em; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 0;">
+            ？
+        </button>
+    </h2>
+
+    <!-- ポップアップ本体 -->
+    <div id="helpPopup" style="display:none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #fff; color: #222; border-radius: 12px; box-shadow: 0 4px 24px rgba(0,0,0,0.18); padding: 28px 24px 18px 24px; z-index: 20000; min-width: 260px; max-width: 90vw;">
+        <button id="closeHelpPopup" style="position: absolute; top: 10px; right: 14px; background: none; border: none; font-size: 1.3em; color: #1976d2; cursor: pointer; font-weight: bold;">×</button>
+        <div style="padding-top: 8px; font-size: 1em; line-height: 1.7;">
+            このリストには、災害時や緊急時に役立つ電話番号や、あなたが登録した連絡先が表示されます。<br>
+            <b>📞ボタン</b>を押すと発信確認が表示され、すぐに電話をかけることができます。<br>
+            <b>修正モード</b>では自分で登録した番号を削除できます。<br>
+            公的な番号（消防・警察など）は削除できません。
+        </div>
+    </div>
+
+    <!-- 登録例 -->
+    <div style="display: flex; justify-content: center; margin-bottom: 18px;">
+        <div class="user-contact-card" style="width:320px; max-width:320px; min-width:320px;">
+            <button class="callable-btn" style="pointer-events: none; opacity: 0.7;">
+                <span style="font-size:1.5em; color:#fff; line-height:1;">📞</span>
+            </button>
+            <div class="user-contact-info">
+                <div class="user-contact-name">連絡先</div>
+                <div class="user-contact-phone">080-0000-0000</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 修正後（テーブルを使わず、カードだけを直接並べる） -->
+    <div id="allPhoneList" style="display: flex; flex-direction: column; align-items: center; gap: 0;">
+        <!-- JSで .user-contact-card をここに直接appendするように変更 -->
+    </div>
+    <p class="desc" style="color: #666;">
+        災害時には電話回線が混雑し、つながりにくくなることがあります。
+        <b>短く要点を伝える</b>、<b>不要不急の通話は控える</b>など、みんなが連絡を取りやすくなるように心がけましょう。<br>
+        <b>災害用伝言ダイヤル（171）</b>や各種相談窓口も活用してください。
+        このページでは、災害時に役立つ電話番号をまとめて<b>確認</b>・<b>登録</b>できます。
+    </p>
     <div id="callConfirmModal">
         <div class="modal-inner">
             <div id="callConfirmText" style="margin-bottom:18px;"></div>
@@ -484,26 +547,59 @@ document.getElementById('editModeBtn').onclick = function() {
     this.style.background = editMode ? '#1565c0' : '#1976d2';
 };
 
-// 例: displayPhones関数を修正
+// displayPhones関数を修正
+const allPhoneList = document.getElementById('allPhoneList');
+
 function displayPhones() {
-    // 既存の自分の連絡先行を一度削除
-    Array.from(allPhoneTableBody.querySelectorAll('.user-phone-row')).forEach(row => row.remove());
-    allPhoneTableBody.insertAdjacentHTML(
-        'beforeend',
-        phones.map((p, i) => `
-            <tr class="user-phone-row" data-phone="${p.phone}">
-                <td class="editable-name" data-index="${i}" style="padding:6px; cursor:pointer;">${p.name}</td>
-                <td>
-                    <span class="callable-number editable-phone" data-index="${i}" data-tel="${p.phone}" style="color:#1976d2; text-decoration:underline; cursor:pointer;">${p.phone}</span>
-                </td>
-            </tr>
-        `).join('')
-    );
+    allPhoneList.innerHTML = '';
+
+    // 既定の連絡先
+    const defaults = [
+        { name: '消防・救急', phone: '119' },
+        { name: '警察', phone: '110' },
+        { name: '災害用伝言ダイヤル', phone: '171' },
+        { name: '救急相談センター', phone: '#7119' },
+        { name: 'こども医療電話相談', phone: '#8000' }
+    ];
+    defaults.forEach((p) => {
+        allPhoneList.insertAdjacentHTML(
+            'beforeend',
+            `
+            <div class="user-contact-card">
+                <button class="callable-btn" data-tel="${p.phone}">
+                    <span style="font-size:1.5em; color:#1976d2; line-height:1;">📞</span>
+                </button>
+                <div class="user-contact-info">
+                    <div class="user-contact-name">${p.name}</div>
+                    <div class="user-contact-phone">${p.phone}</div>
+                </div>
+            </div>
+            `
+        );
+    });
+
+    // ユーザー登録分
+    phones.forEach((p, i) => {
+        allPhoneList.insertAdjacentHTML(
+            'beforeend',
+            `
+            <div class="user-contact-card">
+                <button class="callable-btn" data-tel="${p.phone}">
+                    <span style="font-size:1.5em; color:#1976d2; line-height:1;">📞</span>
+                </button>
+                <div class="user-contact-info">
+                    <div class="user-contact-name">${p.name}</div>
+                    <div class="user-contact-phone">${p.phone}</div>
+                </div>
+            </div>
+            `
+        );
+    });
 
     // 発信確認
-    allPhoneTableBody.querySelectorAll('.callable-number').forEach(el => {
-        el.onclick = function() {
-            if (editMode) return; // 修正モード中は発信しない
+    allPhoneList.querySelectorAll('.callable-btn').forEach(btn => {
+        btn.onclick = function() {
+            if (editMode) return;
             const tel = this.getAttribute('data-tel');
             if (confirm(`「${tel}」に電話をかけますか？`)) {
                 window.location.href = `tel:${tel}`;
@@ -511,21 +607,25 @@ function displayPhones() {
         };
     });
 
-    // 修正モード時のクリックでフォームにセット
+    // 修正モード時の削除
     if (editMode) {
-        allPhoneTableBody.querySelectorAll('.editable-name, .editable-phone').forEach(el => {
-            el.onclick = function() {
-                const idx = this.getAttribute('data-index');
-                nameInput.value = phones[idx].name;
-                phoneInput.value = phones[idx].phone;
+        allPhoneList.querySelectorAll('.user-contact-card').forEach((card, idx) => {
+            if (idx < defaults.length) return;
+            card.onclick = function() {
+                if (confirm(`「${phones[idx - defaults.length].name}」を削除しますか？`)) {
+                    phones.splice(idx - defaults.length, 1);
+                    displayPhones();
+                }
             };
         });
     }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    document.querySelectorAll('.callable-number').forEach(el => {
-        el.addEventListener('click', function() {
+    displayPhones(); // ← これを追加
+
+    document.querySelectorAll('.callable-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
             const tel = this.getAttribute('data-tel');
             if (confirm(`「${tel}」に電話をかけますか？`)) {
                 window.location.href = `tel:${tel}`;
@@ -533,29 +633,39 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 });
+
+// ヘルプポップアップの表示・非表示
+document.getElementById('helpBtn').onclick = function() {
+    document.getElementById('helpPopup').style.display = 'block';
+};
+document.getElementById('closeHelpPopup').onclick = function() {
+    document.getElementById('helpPopup').style.display = 'none';
+};
+
+// フォームヘルプポップアップの表示・非表示
+document.getElementById('formHelpBtn').onclick = function() {
+    document.getElementById('formHelpPopup').style.display = 'block';
+};
+document.getElementById('closeFormHelpPopup').onclick = function() {
+    document.getElementById('formHelpPopup').style.display = 'none';
+};
 </script>
 <footer style="background: linear-gradient(135deg, #3a3f47, #2e3238); padding: 24px 0; text-align: center; color: #fff; margin-top: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.2);">
     <div style="max-width: 960px; margin: 0 auto; padding: 0 16px;">
         <nav style="display: flex; flex-wrap: wrap; justify-content: center; margin-bottom: 12px; font-family: 'Segoe UI', 'Meiryo', sans-serif;">
-            <a href="./index.html" style="display: flex; align-items: center; justify-content: center; flex: 1 1 200px; padding: 12px 20px; margin: 8px; background: #d21922; border-radius: 4px; color: #fff; text-decoration: none; transition: background 0.3s, transform 0.1s;"
-               onmouseover="this.style.background='#1565c0';" onmouseout="this.style.background='#1976d2';" 
-               onmousedown="this.style.transform='scale(0.97)';" onmouseup="this.style.transform='scale(1)';">
+            <a href="./index.html" class="footer-link" style="display: flex; align-items: center; justify-content: center; flex: 1 1 200px; padding: 12px 20px; margin: 8px; background: #d21922; border-radius: 4px; color: #fff; text-decoration: none; transition: background 0.3s, transform 0.1s;">
                 <span style="display: inline-block; width: 32px; height: 32px; line-height: 32px; border-radius: 50%; background: #fff; color: #91d219; text-align: center; margin-right: 8px;">
                     🗺
                 </span>
                 <span>防災マップ</span>
             </a>
-            <a href="./phone.html" style="display: flex; align-items: center; justify-content: center; flex: 1 1 200px; padding: 12px 20px; margin: 8px; background: #d29819; border-radius: 4px; color: #fff; text-decoration: none; transition: background 0.3s, transform 0.1s;"
-               onmouseover="this.style.background='#1565c0';" onmouseout="this.style.background='#1976d2';" 
-               onmousedown="this.style.transform='scale(0.97)';" onmouseup="this.style.transform='scale(1)';">
+            <a href="./phone.html" class="footer-link" style="display: flex; align-items: center; justify-content: center; flex: 1 1 200px; padding: 12px 20px; margin: 8px; background: #d29819; border-radius: 4px; color: #fff; text-decoration: none; transition: background 0.3s, transform 0.1s;">
                 <span style="display: inline-block; width: 32px; height: 32px; line-height: 32px; border-radius: 50%; background: #fff; color: #1976d2; text-align: center; margin-right: 8px;">
                     📞
                 </span>
                 <span>連絡先</span>
             </a>
-            <a href="./list.html" style="display: flex; align-items: center; justify-content: center; flex: 1 1 200px; padding: 12px 20px; margin: 8px; background: #72d219; border-radius: 4px; color: #fff; text-decoration: none; transition: background 0.3s, transform 0.1s;"
-               onmouseover="this.style.background='#1565c0';" onmouseout="this.style.background='#1976d2';" 
-               onmousedown="this.style.transform='scale(0.97)';" onmouseup="this.style.transform='scale(1)';">
+            <a href="./list.html" class="footer-link" style="display: flex; align-items: center; justify-content: center; flex: 1 1 200px; padding: 12px 20px; margin: 8px; background: #72d219; border-radius: 4px; color: #fff; text-decoration: none; transition: background 0.3s, transform 0.1s;">
                 <span style="display: inline-block; width: 32px; height: 32px; line-height: 32px; border-radius: 50%; background: #fff; color: #1976d2; text-align: center; margin-right: 8px;">
                     🎒
                 </span>
@@ -565,7 +675,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <p style="font-size: 0.85em; margin: 8px 0;">© 2025 Reitaku Quake Guard. All Rights Reserved.</p>
         <p style="font-size: 0.75em;">
             <a href="#" style="color: #fff; text-decoration: none; margin: 0 10px; transition: color 0.3s;">利用規約</a>
-            <a href="#" style="color: #fff; text-decoration: none; margin: 0 10px; transition: color 0.3s;">プライバシーポリシー</a>
+            <a href="#" style="color: #fff; text-decoration: none, margin: 0 10px; transition: color 0.3s;">プライバシーポリシー</a>
         </p>
     </div>
     <script>
