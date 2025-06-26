@@ -87,19 +87,23 @@ function showRouteToShelter(shelterLat, shelterLon) {
                 type: 'line',
                 source: routeSourceId,
                 paint: {
-                    'line-color': '#ADFF2F',
+                    'line-color': '#FF0000', // 赤色
                     'line-width': 5
                 }
             });
 
             // ポップアップで所要時間を表示
             if (route.coordinates && route.coordinates.length > 1) {
+                // 既存の歩行時間ポップアップを削除
+                if (window.walkingTimePopup) {
+                    window.walkingTimePopup.remove();
+                }
                 const midIndex = Math.floor(route.coordinates.length / 2);
                 const midCoord = route.coordinates[midIndex];
-                const popupText = `徒歩 約${durationMinutes}分`;
-                new maplibregl.Popup({ closeOnClick: false, closeButton: false })
+                const popupText = `<div class="custom-popup" style="color: #000; background: #fff; padding: 4px 10px; border-radius: 6px; font-weight: bold;">徒歩 約${durationMinutes}分</div>`;
+                window.walkingTimePopup = new maplibregl.Popup({ closeOnClick: false, closeButton: false })
                     .setLngLat(midCoord)
-                    .setHTML(`<div class="custom-popup">${popupText}</div>`)
+                    .setHTML(popupText)
                     .addTo(map);
             }
         } catch (err) {
@@ -111,9 +115,15 @@ function showRouteToShelter(shelterLat, shelterLon) {
     });
 }
 
+let redPinMarker = null; // 1つだけ表示する赤ピン
+
 function showMap(place) {
     markers.forEach(m => m.remove());
     markers = [];
+    if (redPinMarker) {
+        redPinMarker.remove();
+        redPinMarker = null;
+    }
     fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(place)}`)
         .then(res => res.json())
         .then(data => {
@@ -121,7 +131,7 @@ function showMap(place) {
                 const lng = parseFloat(data[0].lon);
                 const lat = parseFloat(data[0].lat);
                 map.flyTo({ center: [lng, lat], zoom: 14 });
-                const marker = new maplibregl.Marker({ color: "red" })
+                redPinMarker = new maplibregl.Marker({ color: "red" })
                     .setLngLat([lng, lat])
                     .setPopup(new maplibregl.Popup().setHTML(`
                         <div>
@@ -130,10 +140,10 @@ function showMap(place) {
                         </div>
                     `))
                     .addTo(map);
-                markers.push(marker);
+                markers.push(redPinMarker);
 
                 // ボタンのクリックイベントを追加
-                marker.getPopup().on('open', () => {
+                redPinMarker.getPopup().on('open', () => {
                     document.getElementById('routeButton').addEventListener('click', () => {
                         showRouteToShelter(lat, lng);
                     });
@@ -171,16 +181,18 @@ function updateSavedShelters() {
                 const shelterLat = parseFloat(data[0].lat);
                 const shelterLon = parseFloat(data[0].lon);
 
-                // 地図をその場所へ移動
                 map.flyTo({ center: [shelterLon, shelterLat], zoom: 14 });
 
-                // 赤いピンを立てる
-                new maplibregl.Marker({ color: "red" })
+                // 既存の赤ピンを削除して最新のものだけ表示
+                if (redPinMarker) {
+                    redPinMarker.remove();
+                    redPinMarker = null;
+                }
+                redPinMarker = new maplibregl.Marker({ color: "red" })
                     .setLngLat([shelterLon, shelterLat])
                     .setPopup(new maplibregl.Popup().setText(shelter))
                     .addTo(map);
 
-                // 現在地からその場所までの経路を表示
                 showRouteToShelter(shelterLat, shelterLon);
             } else {
                 alert('場所が見つかりませんでした');
