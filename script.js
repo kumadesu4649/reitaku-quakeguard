@@ -11,8 +11,33 @@ function initMap(center = [139.767125, 35.681236], zoom = 12) {
         zoom: zoom // 初期ズームレベル
     });
 
+    window.map = map; // ← 追加: グローバルで参照できるように
+
     // ナビゲーションコントロールを追加
     map.addControl(new maplibregl.NavigationControl(), 'top-right');
+
+    // --- ここから追加: 津波レイヤーを重ねる ---
+    map.on('load', function() {
+        if (!map.getSource('tsunami-tile')) {
+            map.addSource('tsunami-tile', {
+                type: 'raster',
+                tiles: [
+                    'https://disaportaldata.gsi.go.jp/raster/04_tsunami_newlegend_data/{z}/{x}/{y}.png'
+                ],
+                tileSize: 256,
+                attribution: '© GSI Japan'
+            });
+            map.addLayer({
+                id: 'tsunami-tile-layer',
+                type: 'raster',
+                source: 'tsunami-tile',
+                paint: {
+                    'raster-opacity': 0.6
+                }
+            });
+        }
+    });
+    // --- ここまで追加 ---
 
     // 現在地を表示（青いピンを追加）
     if (navigator.geolocation) {
