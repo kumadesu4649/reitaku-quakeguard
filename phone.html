@@ -545,6 +545,7 @@ document.getElementById('editModeBtn').onclick = function() {
     editMode = !editMode;
     this.textContent = editMode ? '修正モード中' : '修正';
     this.style.background = editMode ? '#1565c0' : '#1976d2';
+    displayPhones(); // ← これを追加
 };
 
 // displayPhones関数を修正
@@ -561,6 +562,7 @@ function displayPhones() {
         { name: '救急相談センター', phone: '#7119' },
         { name: 'こども医療電話相談', phone: '#8000' }
     ];
+    // 既定の連絡先は常に📞
     defaults.forEach((p) => {
         allPhoneList.insertAdjacentHTML(
             'beforeend',
@@ -580,12 +582,16 @@ function displayPhones() {
 
     // ユーザー登録分
     phones.forEach((p, i) => {
+        // 編集モードなら❌、通常は📞
+        const btnIcon = editMode
+            ? '<span style="font-size:1.5em; color:#d21922; line-height:1;">❌</span>'
+            : '<span style="font-size:1.5em; color:#1976d2; line-height:1;">📞</span>';
         allPhoneList.insertAdjacentHTML(
             'beforeend',
             `
             <div class="user-contact-card">
-                <button class="callable-btn" data-tel="${p.phone}">
-                    <span style="font-size:1.5em; color:#1976d2; line-height:1;">📞</span>
+                <button class="callable-btn" data-tel="${p.phone}" data-index="${i}">
+                    ${btnIcon}
                 </button>
                 <div class="user-contact-info">
                     <div class="user-contact-name">${p.name}</div>
@@ -596,29 +602,37 @@ function displayPhones() {
         );
     });
 
-    // 発信確認
-    allPhoneList.querySelectorAll('.callable-btn').forEach(btn => {
-        btn.onclick = function() {
-            if (editMode) return;
-            const tel = this.getAttribute('data-tel');
-            if (confirm(`「${tel}」に電話をかけますか？`)) {
-                window.location.href = `tel:${tel}`;
-            }
-        };
-    });
-
-    // 修正モード時の削除
-    if (editMode) {
-        allPhoneList.querySelectorAll('.user-contact-card').forEach((card, idx) => {
-            if (idx < defaults.length) return;
-            card.onclick = function() {
-                if (confirm(`「${phones[idx - defaults.length].name}」を削除しますか？`)) {
-                    phones.splice(idx - defaults.length, 1);
-                    displayPhones();
+    // ボタンの挙動
+    allPhoneList.querySelectorAll('.callable-btn').forEach((btn, idx) => {
+        // 既定の連絡先は常に発信
+        if (idx < defaults.length) {
+            btn.onclick = function() {
+                if (editMode) return;
+                const tel = this.getAttribute('data-tel');
+                if (confirm(`「${tel}」に電話をかけますか？`)) {
+                    window.location.href = `tel:${tel}`;
                 }
             };
-        });
-    }
+        } else {
+            // ユーザー登録分
+            if (editMode) {
+                btn.onclick = function() {
+                    const index = Number(this.getAttribute('data-index'));
+                    if (confirm(`「${phones[index].name}」を削除しますか？`)) {
+                        phones.splice(index, 1);
+                        displayPhones();
+                    }
+                };
+            } else {
+                btn.onclick = function() {
+                    const tel = this.getAttribute('data-tel');
+                    if (confirm(`「${tel}」に電話をかけますか？`)) {
+                        window.location.href = `tel:${tel}`;
+                    }
+                };
+            }
+        }
+    });
 }
 
 document.addEventListener('DOMContentLoaded', () => {
