@@ -195,6 +195,25 @@
             background: #1565c0;
             box-shadow: 0 4px 12px rgba(25, 118, 210, 0.22);
         }
+        /* 登録・修正ボタンの色反転 */
+        #phoneForm button,
+        #editModeBtn {
+            background: #1976d2;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            padding: 7px 18px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s, border 0.2s;
+        }
+        #phoneForm button:hover,
+        #editModeBtn:hover {
+            background: #fff;
+            color: #1976d2;
+            border: 2px solid #1976d2;
+        }
         #defaultPhoneTable,
         #defaultPhoneTable th,
         #defaultPhoneTable td,
@@ -340,6 +359,28 @@
         .user-contact-card .callable-btn span {
             color: #1976d2 !important;
         }
+        .button-switch {
+            background: #1976d2;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            width: 48%;
+            padding: 12px 0;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            transition: background 0.2s, color 0.2s, border 0.2s;
+            height: 44px; /* 追加：縦幅を揃える */
+        }
+        .button-switch:hover {
+            background: #fff;
+            color: #1976d2;
+            border: 2px solid #1976d2;
+        }
     </style>
 </head>
 <body>
@@ -396,6 +437,16 @@ window.addEventListener('load', () => {
     <p style="text-align: center; color: #fff; font-size: 1em; margin: 60px auto 0;">
         緊急連絡先リスト
     </p>
+</div>
+
+<!-- ボタンの幅を少し小さく -->
+<div style="display: flex; justify-content: space-between; align-items: center; max-width: 600px; width: 100%; margin: 0 auto 18px auto;">
+    <button id="englishBtn" class="button-switch">
+        English
+    </button>
+    <button id="hiraganaBtn" class="button-switch">
+        ひらがな
+    </button>
 </div>
 
 <div class="main-content" style="margin: 32px auto 0; overflow-x: auto;">
