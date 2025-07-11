@@ -8,7 +8,7 @@
 </head>
 <body>
 
-<div id="splash-screen">
+<div id="splash-screen>
     <h1>
         <img src="./img/tel.png" alt="Quake Guard Logo" class="splash-logo">
         緊急連絡先
@@ -41,6 +41,9 @@ window.addEventListener('load', () => {
     </button>
     <button id="hiraganaBtn" class="button-switch">
         ひらがな
+    </button>
+    <button id="jaBtn" class="button-switch button-switch-small">
+        日本語
     </button>
 </div>
 
@@ -265,6 +268,93 @@ document.getElementById('formHelpBtn').onclick = function() {
 document.getElementById('closeFormHelpPopup').onclick = function() {
     document.getElementById('formHelpPopup').style.display = 'none';
 };
+
+// English/ひらがな切り替え機能
+const langData = {
+    ja: {
+        siteTitleDesc: "緊急連絡先リスト",
+        formTitle: "📞電話番号登録フォーム",
+        formHelp: "名前と電話番号を入力して「登録」ボタンを押すと、下のリストに追加されます。<br>電話番号は自動でハイフンが入ります。<br>例：090-1234-5678、03-1234-5678 など<br>同じ番号・名前の重複登録はできません。",
+        nameLabel: "名前:",
+        phoneLabel: "電話番号:",
+        registerBtn: "登録",
+        example: "入力例：090-1234-5678、03-1234-5678",
+        editBtn: "修正",
+        editBtnActive: "修正モード中",
+        listTitle: "🔢登録済み電話番号リスト",
+        helpPopup: "このリストには、災害時や緊急時に役立つ電話番号や、あなたが登録した連絡先が表示されます。<br><b>📞ボタン</b>を押すと発信確認が表示され、すぐに電話をかけることができます。<br><b>修正モード</b>では自分で登録した番号を削除できます。<br>公的な番号（消防・警察など）は削除できません。",
+        exampleCardName: "連絡先",
+        exampleCardPhone: "080-0000-0000",
+        desc: "災害時には電話回線が混雑し、つながりにくくなることがあります。<b>短く要点を伝える</b>、<b>不要不急の通話は控える</b>など、みんなが連絡を取りやすくなるように心がけましょう。<br><b>災害用伝言ダイヤル（171）</b>や各種相談窓口も活用してください。このページでは、災害時に役立つ電話番号をまとめて<b>確認</b>・<b>登録</b>できます。",
+        backToMain: "元のページに戻る"
+    },
+    en: {
+        siteTitleDesc: "Emergency Contact List",
+        formTitle: "📞Phone Number Registration Form",
+        formHelp: "Enter your name and phone number, then press 'Register' to add it to the list below.<br>Hyphens are automatically inserted.<br>Examples: 090-1234-5678, 03-1234-5678<br>Duplicate names or numbers cannot be registered.",
+        nameLabel: "Name:",
+        phoneLabel: "Phone Number:",
+        registerBtn: "Register",
+        example: "Example: 090-1234-5678, 03-1234-5678",
+        editBtn: "Edit",
+        editBtnActive: "Editing",
+        listTitle: "🔢Registered Phone Numbers",
+        helpPopup: "This list shows useful phone numbers for emergencies and contacts you have registered.<br>Press the <b>📞 button</b> to confirm and make a call.<br>In edit mode, you can delete your own registered numbers.<br>Public numbers (fire, police, etc.) cannot be deleted.",
+        exampleCardName: "Contact",
+        exampleCardPhone: "080-0000-0000",
+        desc: "During disasters, phone lines may be congested and difficult to connect.<b>Keep your message short</b> and <b>avoid unnecessary calls</b> so everyone can communicate more easily.<br>Use the Disaster Message Dial (171) and consultation services.<br>This page lets you <b>check</b> and <b>register</b> useful phone numbers for emergencies.",
+        backToMain: "Back to Main Page"
+    },
+    hira: {
+        siteTitleDesc: "でんわばんごう",
+        formTitle: "📞でんわばんごうとうろく",
+        formHelp: "なまえと でんわばんごう を にゅうりょくして「とうろく」ぼたんを おすと、したの りすと に ついかされます。<br>れい：090-1234-5678、03-1234-5678 など<br>おなじ なまえ や ばんごう の じゅうふくとうろく は できません。",
+        nameLabel: "なまえ:",
+        phoneLabel: "でんわばんごう:",
+        registerBtn: "とうろく",
+        example: "たとえば：090-1234-5678、03-1234-5678",
+        editBtn: "なおす",
+        editBtnActive: "なおせる",
+        listTitle: "🔢とうろくしてあるでんわばんごう りすと",
+        helpPopup: "この りすと には、さいがい　や あぶないとき に やくだつ でんわばんごう や、あなた が とうろくした でんわばんごう が  あります。<br><b>📞ぼたん</b>を おすと でんわするかかくにんされ、でんわ を かけられます。<br><b>なおせる</b>では じぶん で とうろくした ばんごう を けすことができます。<br>しょうぼう・けいさつ などは けせません。",
+        exampleCardName: "れんらくさき",
+        exampleCardPhone: "080-0000-0000",
+        desc: "さいがいじ には でんわかいせん が つながり にくく なる こと が あります。<b>みじかく ようてん を つたえる</b>、みんな が れんらく を とりやすく なる よう に こころがけましょう。<br><b>さいがいよう でんごん だいやる（171）</b>や かくしゅ そうだん まどぐち も かつよう してください。この ぺーじ では、さいがいじ に やくだつ でんわばんごう を まとめて<b>かくにん</b>・<b>とうろく</b>できます。",
+        backToMain: "もとの ぺーじ に もどる"
+    }
+};
+
+function setLang(lang) {
+    document.querySelector('.site-title-desc').textContent = langData[lang].siteTitleDesc;
+    document.querySelector('.form-title').childNodes[0].nodeValue = langData[lang].formTitle;
+    document.querySelector('#formHelpPopup .popup-content').innerHTML = langData[lang].formHelp;
+    document.querySelector('label[for="name"]').textContent = langData[lang].nameLabel;
+    document.querySelector('label[for="phone"]').textContent = langData[lang].phoneLabel;
+    document.getElementById('registerBtn').textContent = langData[lang].registerBtn;
+    document.querySelector('.example').textContent = langData[lang].example;
+    document.getElementById('editModeBtn').textContent = editMode ? langData[lang].editBtnActive : langData[lang].editBtn;
+    document.querySelector('.list-title').childNodes[0].nodeValue = langData[lang].listTitle;
+    document.querySelector('#helpPopup .popup-content').innerHTML = langData[lang].helpPopup;
+    document.querySelector('.example-card .user-contact-name').textContent = langData[lang].exampleCardName;
+    document.querySelector('.example-card .user-contact-phone').textContent = langData[lang].exampleCardPhone;
+    document.querySelector('.desc').innerHTML = langData[lang].desc;
+    document.getElementById('backToMain').textContent = langData[lang].backToMain;
+}
+
+// ボタンイベント
+document.getElementById('englishBtn').onclick = function() {
+    setLang('en');
+};
+document.getElementById('hiraganaBtn').onclick = function() {
+    setLang('hira');
+};
+document.getElementById('jaBtn').onclick = function() {
+    setLang('ja');
+};
+// 日本語初期化
+document.addEventListener('DOMContentLoaded', () => {
+    setLang('ja');
+});
 </script>
 <footer>
     <div class="footer-inner">

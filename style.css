@@ -253,6 +253,13 @@ h4 {
     border: 2px solid #1976d2;
 }
 
+/* 日本語ボタンだけ小さく */
+.button-switch-small {
+    width: 24%;
+    font-size: 1em;
+    padding: 10px 0;
+}
+
 /* テーブル（リスト） */
 #defaultPhoneTable,
 #defaultPhoneTable th,
@@ -359,7 +366,7 @@ h4 {
 .site-title-desc { text-align: center; color: #fff; font-size: 1em; margin: 60px auto 0; }
 
 /* ボタン2つの配置 */
-.switch-btns { display: flex; justify-content: space-between; align-items: center; max-width: 600px; width: 100%; margin: 0 auto 18px auto; }
+.switch-btns { display: flex; justify-content: space-between; align-items: center; max-width: 600px; width: 100%; margin: 0 auto 18px auto; gap: 10px; /* 追加: ボタン間の幅 */ }
 
 /* .main-content, .user-contact-card, .button-switch, .callable-btn, .desc, .back-link などは既存style.cssの内容でOK */
 
