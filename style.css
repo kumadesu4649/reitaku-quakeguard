@@ -1,51 +1,215 @@
+body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #2e3238;
+    margin: 0;
+    padding: 0;
+}
+
+/* サイトタイトルバー */
 .site-title-bar {
-    background: #222;
+    background: #3a3f47; 
     color: #fff;
     display: flex;
     align-items: center;
-    padding: 20px 0 12px 0;
-    margin-bottom: 32px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.12);
-    position: relative; /* 追加 */
+    padding: 36px 0 26px 0;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.13);
+    position: relative;
+    width: 100vw;
+    min-width: 100vw;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
 }
-
-/* フッターのボタン（リンク）のホバー時のみ青系に */
-.footer-link {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex: 1 1 200px;
-    padding: 12px 20px;
-    margin: 8px;
+.site-title-bar .site-title {
+    flex: 1;
+    text-align: center;
+    font-size: 2em;
+    letter-spacing: 0.1em;
+    font-weight: bold;
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin: auto;
+    width: max-content;
+    color: #fff;
+}
+.site-title-bar .header-button {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #1976d2;
+    color: #fff;
+    border: none;
     border-radius: 4px;
-    color: #fff;
-    text-decoration: none;
-    transition: background 0.3s, color 0.3s, transform 0.1s;
-    /* デフォルトの背景色は個別のstyle属性でOK */
+    padding: 8px 12px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background 0.2s;
 }
-.footer-link:hover {
-    background: #1565c0 !important;
-    color: #fff !important;
-    transform: scale(1.03);
+.site-title-bar .header-button:hover {
+    background: #1565c0;
 }
 
-/* 既存のstyle.cssの末尾などに追記 */
+/* 戻るリンク */
+.back-link {
+    margin-left: 16px;
+    margin-right: 16px;
+    background: #f3f3f3;
+    color: #3a3f47;
+    padding: 6px 14px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: bold;
+    border: 1px solid #3a3f47;
+    font-size: 0.95em;
+    transition: background 0.2s, color 0.2s;
+}
+.back-link:hover {
+    background: #e3e3e3;
+    color: #222;
+}
+
+/* メインコンテンツの白い四角 */
+.main-content {
+    background: #fff;
+    color: #1a2340;
+    border-radius: 14px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.13);
+    padding: 32px 24px 28px 24px;
+    margin: 40px auto 0;
+    width: 100%;
+    max-width: 600px;
+    box-sizing: border-box;
+}
+
+/* 見出し */
+h2, h3, h4 {
+    color: #1976d2;
+    margin-top: 24px;
+    margin-bottom: 12px;
+    font-weight: bold;
+    letter-spacing: 0.04em;
+}
+h2 {
+    font-size: 1.25em;
+    border-left: 4px solid #1976d2;
+    padding-left: 10px;
+}
+h3 {
+    color: #1976d2 !important;
+    font-weight: bold;
+}
+h4 {
+    font-size: 1em;
+}
+
+/* 説明文 */
+.desc {
+    color: #1991c6;
+    font-size: 1.18em;
+    font-family: 'Segoe UI', 'Meiryo', 'Rounded Mplus 1c', 'Arial Rounded MT Bold', Arial, sans-serif;
+    margin-bottom: 1.2em;
+    line-height: 1.8;
+    font-weight: 500;
+}
+.example {
+    margin-top: 0.5em;
+    color: #1976d2;
+    font-size: 0.98em;
+}
+
+/* フォーム */
+#phoneForm {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 12px;
+}
+#phoneForm label {
+    margin-top: 0;
+    margin-bottom: 0;
+    display: block;
+}
+#phoneForm input[type="text"],
+#phoneForm input[type="tel"] {
+    border: 2px solid #1976d2;
+    border-radius: 5px;
+    background: #f7faff;
+    color: #1a2340;
+    font-size: 0.98em;
+    padding: 6px 8px;
+    width: 220px;
+    max-width: 100%;
+    box-sizing: border-box;
+    transition: border 0.2s;
+}
+#phoneForm input[type="text"]:focus,
+#phoneForm input[type="tel"]:focus {
+    border: 2px solid #1565c0;
+    outline: none;
+}
+#phoneForm button {
+    font-size: 0.98em;
+    padding: 6px 16px;
+    height: 34px;
+    background: #1976d2;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s, box-shadow 0.2s, color 0.2s, border 0.2s;
+    box-shadow: 0 2px 8px rgba(25, 118, 210, 0.15);
+}
+#phoneForm button:hover {
+    background: #fff;
+    color: #1976d2;
+    border: 2px solid #1976d2;
+    box-shadow: 0 4px 12px rgba(25, 118, 210, 0.22);
+}
+
+/* 修正ボタン */
+#editModeBtn {
+    background: #1976d2;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 7px 18px;
+    font-size: 1em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s, border 0.2s;
+}
+#editModeBtn:hover {
+    background: #fff;
+    color: #1976d2;
+    border: 2px solid #1976d2;
+}
+
+/* 連絡先カード */
 .user-contact-card {
     display: flex;
     align-items: center;
-    background: #eaf7fa; /* 画像のリストと同じ明るい水色 */
+    background: #f3fbfe;
     border-radius: 12px;
     padding: 8px 24px;
     margin: 0 auto 14px auto;
-    max-width: 340px;
-    min-width: 220px;
+    width: 550px;
+    max-width: 550px;
+    min-width: 320px;
     box-shadow: none;
     gap: 12px;
     transition: background 0.2s;
+    min-height: 56px;
+    height: 56px;
+    box-sizing: border-box;
 }
 .user-contact-card .callable-btn {
-    background: #1976d2;
-    border: none;
+    background: #fff;
+    border: 2px solid #1976d2;
     border-radius: 10px;
     width: 40px;
     height: 40px;
@@ -54,27 +218,183 @@
     justify-content: center;
     margin-right: 16px;
     cursor: pointer;
-    transition: background 0.2s;
+    transition: background 0.2s, border 0.2s;
     padding: 0;
 }
 .user-contact-card .callable-btn:hover {
-    background: #1565c0;
+    background: #e3f0fb;
+    border: 2px solid #1565c0;
 }
-.user-contact-info {
+.user-contact-card .callable-btn span {
+    color: #1976d2 !important;
+}
+
+/* 2つの切替ボタン */
+.button-switch {
+    background: #1976d2;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    width: 48%;
+    padding: 12px 0;
+    font-size: 1.1em;
+    font-weight: bold;
+    cursor: pointer;
     display: flex;
-    flex-direction: column;
     align-items: center;
-    flex: 1;
-}
-.user-contact-name {
-    font-size: 1.08em;
-    font-weight: 500;
-    color: #222;
+    justify-content: center;
     text-align: center;
+    transition: background 0.2s, color 0.2s, border 0.2s;
+    height: 44px;
 }
-.user-contact-phone {
+.button-switch:hover {
+    background: #fff;
+    color: #1976d2;
+    border: 2px solid #1976d2;
+}
+
+/* テーブル（リスト） */
+#defaultPhoneTable,
+#defaultPhoneTable th,
+#defaultPhoneTable td,
+#userPhoneTable,
+#userPhoneTable th,
+#userPhoneTable td {
+    border: 1.5px solid #1976d2;
+}
+#defaultPhoneTable,
+#userPhoneTable {
+    border-collapse: collapse;
+    background: #fff;
+    margin-bottom: 18px;
+    background: #f7faff;
+    color: #1a2340;
+}
+#defaultPhoneTable th,
+#userPhoneTable th {
+    background: #e3f0fb;
+    color: #1976d2;
+    font-weight: bold;
     font-size: 1em;
-    color: #222;
+    padding: 8px 6px;
+}
+#defaultPhoneTable td,
+#userPhoneTable td {
+    color: #1a2340;
+    font-size: 1.15em;
+    font-weight: normal;
+    padding: 8px 6px;
+}
+
+/* モーダル */
+#callConfirmModal {
+    display: none;
+    position: fixed;
+    left: 0; top: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(30,32,36,0.55);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+}
+#callConfirmModal .modal-inner {
+    background: #383d45;
+    color: #f8f9fa;
+    border-radius: 8px;
+    padding: 20px 10vw;
+    min-width: 200px;
+    max-width: 90vw;
     text-align: center;
-    margin-top: 2px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.18);
+}
+#callConfirmModal button {
+    margin: 0 8px;
+    background: #1976d2;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 7px 18px;
+    font-size: 1em;
+    font-weight: bold;
+    cursor: pointer;
+}
+#callConfirmModal button#callNo {
+    background: #555;
+}
+
+/* スプラッシュスクリーン・フェード */
+#splash-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #2d2d2d;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+    transition: opacity 1.5s ease-out;
+}
+.fade-out {
+    opacity: 0;
+    pointer-events: none;
+}
+.navbar-fade-in {
+    animation: fadeIn 1.5s ease-in-out;
+}
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* splash画面 */
+#splash-screen h1 { font-size: 3rem; font-weight: bold; color: #fff; text-align: center; }
+.splash-logo { width: 100px; height: 100px; display: block; margin: 0 auto 1rem; filter: brightness(0) invert(1); border-radius: 50%; }
+.splash-subtitle { font-size: 1.5rem; color: #f7f7f7; }
+
+/* タイトルバー */
+.site-title-bar { /* 既存のCSSでOK */ }
+.site-title { position: absolute; left: 0; right: 0; margin: auto; width: max-content; text-decoration: none; color: #fff; }
+.site-title-desc { text-align: center; color: #fff; font-size: 1em; margin: 60px auto 0; }
+
+/* ボタン2つの配置 */
+.switch-btns { display: flex; justify-content: space-between; align-items: center; max-width: 600px; width: 100%; margin: 0 auto 18px auto; }
+
+/* .main-content, .user-contact-card, .button-switch, .callable-btn, .desc, .back-link などは既存style.cssの内容でOK */
+
+/* フォーム・リスト見出しのflex配置 */
+.form-title, .list-title { display: flex; align-items: center; gap: 8px; }
+.help-btn { background: #1976d2; color: #fff; border: none; border-radius: 50%; width: 28px; height: 28px; font-size: 1.1em; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 0; }
+
+/* ポップアップ */
+.popup { display:none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #fff; color: #222; border-radius: 12px; box-shadow: 0 4px 24px rgba(0,0,0,0.18); padding: 28px 24px 18px 24px; z-index: 20000; min-width: 260px; max-width: 90vw; }
+.popup-close { position: absolute; top: 10px; right: 14px; background: none; border: none; font-size: 1.3em; color: #1976d2; cursor: pointer; font-weight: bold; }
+.popup-content { padding-top: 8px; font-size: 1em; line-height: 1.7; }
+
+/* フッター */
+footer { background: linear-gradient(135deg, #3a3f47, #2e3238); padding: 24px 0; text-align: center; color: #fff; margin-top: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+.footer-inner { max-width: 960px; margin: 0 auto; padding: 0 16px; }
+.footer-nav { display: flex; flex-wrap: wrap; justify-content: center; margin-bottom: 12px; font-family: 'Segoe UI', 'Meiryo', sans-serif; }
+.footer-btn { display: flex; align-items: center; justify-content: center; flex: 1 1 200px; padding: 12px 20px; margin: 8px; background: #1976d2; border-radius: 4px; color: #fff; text-decoration: none; transition: background 0.3s, transform 0.1s; font-weight: bold; }
+.footer-btn:hover { background: #fff; color: #1976d2; border: 2px solid #1976d2; }
+.footer-btn-icon { display: inline-block; width: 32px; height: 32px; line-height: 32px; border-radius: 50%; background: #fff; color: #1976d2; text-align: center; margin-right: 8px; }
+.footer-copy { font-size: 0.85em; margin: 8px 0; }
+.footer-links a { color: #fff; text-decoration: none; margin: 0 10px; transition: color 0.3s; }
+.footer-links a:hover { color: #90caf9; }
+
+/* レスポンシブ */
+@media (max-width: 600px) {
+    .main-content {
+        max-width: 100vw;
+        padding-left: 2vw;
+        padding-right: 2vw;
+        margin-left: 0;
+        margin-right: 0;
+    }
+    #defaultPhoneTable,
+    #userPhoneTable {
+        font-size: 0.98em;
+        word-break: break-all;
+    }
 }
