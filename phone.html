@@ -435,7 +435,7 @@ window.addEventListener('load', () => {
     <!-- 入力例の隣に修正ボタンを設置 -->
     <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 12px;">
         <p class="example" style="margin: 0;">
-            入力例：090-1234-5678、03-1234-5678、052-1234-5677
+            入力例：090-1234-5678、03-1234-5678
         </p>
         <button id="editModeBtn" style="background: #1976d2; color: #fff; border: none; border-radius: 4px; padding: 7px 18px; font-size: 1em; font-weight: bold; cursor: pointer;">
             修正
@@ -503,35 +503,39 @@ const form = document.getElementById('phoneForm');
 const phoneInput = document.getElementById('phone');
 const nameInput = document.getElementById('name');
 const allPhoneTableBody = document.getElementById('allPhoneTableBody');
-const phones = [];
+// phones配列の初期化をlocalStorageから
+let phones = [];
+if (localStorage.getItem('quakeguardPhones')) {
+    phones = JSON.parse(localStorage.getItem('quakeguardPhones'));
+}
 
 // 入力時に自動でハイフンを挿入
 phoneInput.addEventListener('input', function(e) {
     let value = phoneInput.value.replace(/[^0-9]/g, '');
-    if (value.length <= 10) {
-        if (value.startsWith('03') || value.startsWith('06')) {
-            value = value.replace(/^(\d{2})(\d{4})(\d{0,4})$/, function(_, a, b, c) {
-                return c ? `${a}-${b}-${c}` : b ? `${a}-${b}` : a;
-            });
-        } else if (value.length > 2) {
-            value = value.replace(/^(\d{3})(\d{3,4})(\d{0,4})$/, function(_, a, b, c) {
-                return c ? `${a}-${b}-${c}` : b ? `${a}-${b}` : a;
-            });
-        }
+
+    // 固定電話（03, 06）は10桁、携帯は11桁で制限
+    if (value.startsWith('03') || value.startsWith('06')) {
+        value = value.slice(0, 10); // 固定電話は最大10桁
+        value = value.replace(/^(\d{2})(\d{4})(\d{0,4})$/, function(_, a, b, c) {
+            return c ? `${a}-${b}-${c}` : b ? `${a}-${b}` : a;
+        });
     } else {
-        value = value.replace(/^(\d{3})(\d{4})(\d{0,4})$/, function(_, a, b, c) {
+        value = value.slice(0, 11); // 携帯は最大11桁
+        value = value.replace(/^(\d{3})(\d{3,4})(\d{0,4})$/, function(_, a, b, c) {
             return c ? `${a}-${b}-${c}` : b ? `${a}-${b}` : a;
         });
     }
     phoneInput.value = value;
 });
 
+// 登録時にlocalStorageへ保存
 form.addEventListener('submit', function(e) {
     e.preventDefault();
     const phone = phoneInput.value.trim();
     const name = nameInput.value.trim();
     if(phone && name && !phones.some(item => item.phone === phone && item.name === name)) {
         phones.push({ name, phone });
+        localStorage.setItem('quakeguardPhones', JSON.stringify(phones)); // 追加
         displayPhones();
         phoneInput.value = '';
         nameInput.value = '';
@@ -620,6 +624,7 @@ function displayPhones() {
                     const index = Number(this.getAttribute('data-index'));
                     if (confirm(`「${phones[index].name}」を削除しますか？`)) {
                         phones.splice(index, 1);
+                        localStorage.setItem('quakeguardPhones', JSON.stringify(phones)); // 追加
                         displayPhones();
                     }
                 };
@@ -695,7 +700,7 @@ document.getElementById('closeFormHelpPopup').onclick = function() {
             <p style="font-size: 0.85em; margin: 8px 0;">© 2025 Reitaku Quake Guard. All Rights Reserved.</p>
             <p style="font-size: 0.75em;">
             <a href="#" style="color: #fff; text-decoration: none; margin: 0 10px; transition: color 0.3s;">利用規約</a>
-            <a href="#" style="color: #fff; text-decoration: none; margin: 0 10px; transition: color 0.3s;">プライバシーポリシー</a>
+            <a href="#" style="color: #fff; text-decoration: none, margin: 0 10px; transition: color 0.3s;">プライバシーポリシー</a>
         </p>
     </div>
     <script>
